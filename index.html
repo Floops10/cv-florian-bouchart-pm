@@ -1,0 +1,1874 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Florian Bouchart - Portfolio Chef de Projet</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        /* ==========================================================================
+           1. RESET & VARIABLES GLOBALES
+           ========================================================================== */
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        :root {
+            /* --- PALETTE DE COULEURS (ACCENTS NEON) --- */
+            --orange: #ff6b35;
+            --teal: #00d4aa;
+            --purple: #6a4c93;
+            --pink: #ff006e;
+            --yellow: #ffbe0b;
+            
+            /* --- THÈME MIDNIGHT PRO --- */
+            --bg-primary: #020617; 
+            --bg-secondary: #0f172a; 
+            
+            --glass-bg: rgba(30, 41, 59, 0.6); 
+            --glass-border: rgba(255, 255, 255, 0.08);
+            
+            --modal-bg: rgba(2, 6, 23, 0.95); 
+            --dock-bg: rgba(15, 23, 42, 0.8); 
+            --dock-border: rgba(255, 255, 255, 0.1);
+            
+            --text-primary: #ffffff;
+            --text-secondary: #94a3b8; 
+            
+            --font-display: 'Outfit', sans-serif;
+            --font-body: 'Inter', sans-serif;
+        }
+
+        /* --- THÈME CLAIR (MODE SOBRE) --- */
+        body.sober-mode {
+            --bg-primary: #f2f2f7;
+            --bg-secondary: #ffffff;
+            
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(0, 0, 0, 0.05);
+            
+            --modal-bg: rgba(255, 255, 255, 0.98);
+            
+            --text-primary: #1d1d1f;
+            --text-secondary: #515155;
+            
+            --dock-bg: rgba(255, 255, 255, 0.9);
+            --dock-border: rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            line-height: 1.6;
+            overflow-x: hidden; 
+            padding-bottom: 140px; 
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        /* ==========================================================================
+           2. EFFETS D'ARRIÈRE-PLAN
+           ========================================================================== */
+        
+        .grid-background {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            background-image: 
+                linear-gradient(to right, rgba(255, 107, 53, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 212, 170, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+        }
+
+        .cursor-glow {
+            position: fixed;
+            width: 700px;
+            height: 700px;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            background: radial-gradient(circle, rgba(255, 107, 53, 0.12) 0%, rgba(0, 212, 170, 0.08) 30%, transparent 70%);
+            transform: translate(-50%, -50%);
+            filter: blur(60px);
+            mix-blend-mode: screen;
+        }
+        
+        .cursor-glow.active { opacity: 1; }
+
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(100px);
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.3;
+            transition: opacity 0.5s ease;
+        }
+        .orb-1 { top: 5%; left: 5%; width: 40vw; height: 40vw; background: linear-gradient(135deg, var(--orange), var(--pink)); animation: float 10s ease-in-out infinite; }
+        .orb-2 { top: 40%; right: 5%; width: 50vw; height: 50vw; background: linear-gradient(135deg, var(--teal), var(--purple)); animation: float 12s ease-in-out infinite 2s; }
+        .orb-3 { bottom: 5%; left: 20%; width: 45vw; height: 45vw; background: linear-gradient(135deg, var(--purple), var(--yellow)); animation: float 14s ease-in-out infinite 4s; }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+            33% { transform: translate(30px, -30px) scale(1.05) rotate(10deg); }
+            66% { transform: translate(-20px, 20px) scale(0.95) rotate(-5deg); }
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        /* ==========================================================================
+           3. HERO SECTION 
+           ========================================================================== */
+        
+        .hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 6rem 1rem; position: relative; }
+        .hero-content { text-align: center; max-width: 950px; width: 100%; }
+
+        .profile-image-wrapper { margin-bottom: 2rem; display: flex; justify-content: center; }
+        .profile-image {
+            width: clamp(150px, 20vw, 220px);
+            height: clamp(150px, 20vw, 220px);
+            border-radius: 50%;
+            padding: 6px;
+            background: linear-gradient(var(--bg-primary), var(--bg-primary)) padding-box, linear-gradient(135deg, var(--orange), var(--teal), var(--purple)) border-box;
+            border: 4px solid transparent;
+            box-shadow: 0 0 50px rgba(255, 107, 53, 0.3), 0 0 100px rgba(106, 76, 147, 0.2);
+            animation: fadeInScale 1s ease-out, profilePulse 4s infinite;
+        }
+        .profile-image img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+
+        @keyframes profilePulse {
+            0%, 100% { box-shadow: 0 0 50px rgba(255, 107, 53, 0.3); }
+            50% { box-shadow: 0 0 80px rgba(255, 107, 53, 0.5), 0 0 100px rgba(106, 76, 147, 0.4); }
+        }
+        @keyframes fadeInScale { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
+
+        .hero-title { font-family: var(--font-display); font-size: clamp(1.5rem, 3vw, 2.5rem); font-weight: 900; line-height: 1.1; margin-bottom: 1rem; letter-spacing: -0.02em; }
+        .gradient-text {
+            background: linear-gradient(135deg, var(--orange), var(--teal), var(--purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: inline-block;
+            filter: drop-shadow(0 0 30px rgba(255, 107, 53, 0.4));
+        }
+
+        .hero-description { font-size: clamp(1rem, 2vw, 1.2rem); color: var(--text-secondary); max-width: 800px; margin: 0 auto 3rem; line-height: 1.8; }
+        .hero-description .highlight { color: var(--teal); font-weight: 600; text-shadow: 0 0 20px rgba(0, 212, 170, 0.3); }
+
+        .cta-container { display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap; }
+        .btn {
+            display: inline-flex; align-items: center; gap: 0.8rem; padding: 1.2rem 2.5rem; font-size: 1.1rem; font-weight: 700;
+            border-radius: 1rem; text-decoration: none; transition: all 0.3s ease; font-family: var(--font-display);
+            position: relative; overflow: hidden; z-index: 1;
+        }
+        .btn::before {
+            content: ''; position: absolute; top: 50%; left: 50%; width: 0; height: 0; border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2); transform: translate(-50%, -50%); transition: width 0.6s ease, height 0.6s ease; z-index: -1;
+        }
+        .btn:hover::before { width: 500px; height: 500px; }
+        .btn-primary { background: linear-gradient(135deg, var(--orange), var(--pink)); color: white; box-shadow: 0 10px 40px rgba(255, 107, 53, 0.5); }
+        .btn-primary:hover { transform: translateY(-5px); box-shadow: 0 15px 50px rgba(255, 107, 53, 0.7); }
+        .btn-secondary { background: transparent; color: var(--text-primary); border: 2px solid rgba(0, 212, 170, 0.5); backdrop-filter: blur(5px); }
+        .btn-secondary:hover { border-color: var(--teal); transform: translateY(-5px); box-shadow: 0 10px 40px rgba(0, 212, 170, 0.2); }
+
+        .scroll-down {
+            position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); color: var(--text-secondary);
+            animation: bounce 2s infinite; cursor: pointer; opacity: 0.7; transition: color 0.3s;
+        }
+        .scroll-down:hover { color: var(--orange); opacity: 1; }
+        @keyframes bounce { 0%, 20%, 50%, 80%, 100% { transform: translate(-50%, 0); } 40% { transform: translate(-50%, -10px); } 60% { transform: translate(-50%, -5px); } }
+
+        /* ==========================================================================
+           4. SECTIONS & GRIDS
+           ========================================================================== */
+        
+        section { padding: clamp(4rem, 8vw, 8rem) 1rem; position: relative; }
+        .section-header { text-align: center; margin-bottom: 4rem; }
+        .section-title { font-family: var(--font-display); font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 900; margin-bottom: 1rem; letter-spacing: -0.02em; }
+        .section-subtitle { font-size: clamp(1.1rem, 2vw, 1.4rem); color: var(--text-secondary); }
+
+        .experience-grid, .vision-grid, .skills-grid {
+            display: grid; gap: 2rem; max-width: 1400px; margin: 0 auto; grid-template-columns: 1fr;
+        }
+        @media (min-width: 768px) { .experience-grid, .vision-grid, .skills-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (min-width: 1200px) {
+            .experience-grid { grid-template-columns: repeat(2, 1fr); }
+            .vision-grid { grid-template-columns: repeat(4, 1fr); }
+            .skills-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        /* ==========================================================================
+           5. CARDS (GLASSMORPHISM & INTERACTIONS)
+           ========================================================================== */
+        
+        .card-glass {
+            background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border); border-radius: 1.5rem; padding: 2rem;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+
+        .vision-card:hover, .skill-category:hover {
+            transform: translateY(-10px) scale(1.02); border-color: var(--orange);
+            box-shadow: 0 20px 50px rgba(255, 107, 53, 0.15), inset 0 0 20px rgba(255, 107, 53, 0.05); background: rgba(30, 30, 30, 0.01);
+        }
+
+        /* --- STYLE EXPÉRIENCES (POPUP MODE) --- */
+        .experience-card { cursor: pointer; transition: all 0.3s ease; }
+        
+        .experience-card:hover {
+            border-color: var(--card-color, var(--orange));
+            background: rgba(255, 255, 255, 0.03);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .exp-header { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 0; }
+
+        .exp-icon {
+            width: 70px; height: 70px; border-radius: 1.2rem; display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0; color: white; background: #FFFFFF; box-shadow: 0 10px 25px rgba(0,0,0,0.3); overflow: hidden; padding: 2px;
+        }
+        .exp-icon img { width: 100%; height: 100%; object-fit: contain; }
+        .exp-icon.no-img { background: linear-gradient(135deg, #ff6b35, #f77f00); padding: 0; }
+
+        .exp-info { flex: 1; }
+        .exp-info h3 { font-family: var(--font-display); font-size: 1.4rem; font-weight: 700; margin-bottom: 0.2rem; line-height: 1.2; }
+        .exp-period { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 0.2rem; font-weight: 500; }
+        .exp-company { font-weight: 600; font-size: 1.05rem; color: var(--text-primary); }
+
+        .exp-action {
+            display: flex; align-items: center; justify-content: center; width: 40px; height: 40px;
+            border-radius: 50%; background: rgba(255, 255, 255, 0.05); color: var(--text-secondary);
+            transition: all 0.3s; flex-shrink: 0; border: 1px solid transparent;
+        }
+        .experience-card:hover .exp-action, .timeline-item:hover .exp-action {
+            background: var(--card-color, var(--orange)); color: white; transform: scale(1.1);
+            border-color: rgba(255,255,255,0.2); box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .exp-tag {
+            padding: 0.4rem 1rem; border-radius: 2rem; font-size: 0.85rem; font-weight: 600;
+            background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-primary); transition: all 0.3s;
+        }
+        
+        .modal-content::-webkit-scrollbar { width: 8px; }
+        .modal-content::-webkit-scrollbar-track { background: transparent; }
+        .modal-content::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 10px; }
+        .modal-content::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.3); }
+
+        .vision-icon { width: 65px; height: 65px; border-radius: 1.2rem; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; color: white; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .vision-card h3 { font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem; }
+        .vision-card p { color: var(--text-secondary); line-height: 1.7; }
+
+        /* ==========================================================================
+           6. SECTION ATOUTS 
+           ========================================================================== */
+        
+        .traits-container { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(450px, 100%), 1fr)); gap: 2rem; }
+        .trait-card.strengths { border-left: 4px solid var(--teal); }
+        .trait-card.weaknesses { border-left: 4px solid var(--yellow); }
+        .trait-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem; }
+        .trait-badge { padding: 0.5rem 1.2rem; border-radius: 2rem; font-size: 0.9rem; font-weight: 700; letter-spacing: 0.05em; }
+        .trait-badge.green { background: rgba(0, 212, 170, 0.15); color: var(--teal); border: 1px solid rgba(0, 212, 170, 0.3); }
+        .trait-badge.amber { background: rgba(255, 190, 11, 0.15); color: var(--yellow); border: 1px solid rgba(255, 190, 11, 0.3); }
+        .trait-list { display: flex; flex-direction: column; gap: 1rem; }
+
+        .trait-item {
+            display: flex; align-items: flex-start; gap: 1rem; padding: 1rem; background: rgba(255, 255, 255, 0.03);
+            border-radius: 1rem; transition: all 0.3s ease; cursor: pointer; border: 1px solid transparent;
+        }
+        .trait-item:hover { transform: translateX(10px); background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.1); }
+        .trait-item i { margin-top: 3px; transition: transform 0.3s; }
+        .trait-item:hover i { transform: scale(1.2); }
+        .trait-item span { font-size: 1rem; color: var(--text-secondary); line-height: 1.6; }
+
+        /* --- STYLE DES MODALES POPUP UNIFIÉES --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); z-index: 2000;
+            display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: all 0.4s ease; backdrop-filter: blur(10px);
+        }
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+        .modal-content {
+            background: var(--modal-bg); border: 1px solid var(--glass-border); padding: 3rem; border-radius: 2rem;
+            max-width: 700px; width: 90%; max-height: 85vh; overflow-y: auto; transform: translateY(30px); transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative; box-shadow: 0 25px 80px rgba(0,0,0,0.6);
+        }
+        .modal-overlay.active .modal-content { transform: translateY(0); }
+        
+        .modal-close {
+            position: absolute; top: 1.5rem; right: 1.5rem; background: rgba(255, 255, 255, 0.1); border: none;
+            width: 40px; height: 40px; border-radius: 50%; color: var(--text-primary); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s;
+        }
+        .modal-close:hover { background: var(--orange); color: white; transform: rotate(90deg); }
+        .modal-title { font-family: var(--font-display); font-size: 1.8rem; font-weight: 800; margin-bottom: 0.5rem; }
+
+        /* ==========================================================================
+           7. COMPÉTENCES
+           ========================================================================== */
+        
+        .skill-category h3 { display: flex; align-items: center; gap: 0.8rem; font-family: var(--font-display); font-weight: 700; font-size: 1.4rem; margin-bottom: 1.5rem; }
+        .skill-tags { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+        .skill-tag {
+            padding: 0.5rem 1.1rem; border-radius: 2rem; font-size: 0.9rem; font-weight: 500;
+            background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: var(--text-secondary); transition: all 0.3s;
+        }
+        .skill-tag:hover { background: var(--purple); color: white; transform: scale(1.1); border-color: transparent; box-shadow: 0 0 20px rgba(106, 76, 147, 0.5); }
+
+        /* ==========================================================================
+           8. FORMATION (TIMELINE POPUP)
+           ========================================================================== */
+        
+        .timeline { display: flex; flex-direction: column; gap: 2rem; max-width: 1200px; margin: 0 auto; }
+        .timeline-item { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 1.5rem; transition: all 0.3s; cursor: pointer; }
+        .timeline-item:hover { border-color: var(--card-color, var(--purple)); box-shadow: 0 10px 30px rgba(0,0,0,0.2); transform: translateY(-3px); background: rgba(255,255,255,0.03); }
+        .timeline-header { padding: 1.5rem 2rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+        
+        .timeline-badge {
+            width: 65px; height: 65px; border-radius: 1.2rem; display: flex; align-items: center; justify-content: center;
+            font-family: var(--font-display); font-size: 1.2rem; font-weight: 900; color: white; flex-shrink: 0; box-shadow: 0 5px 20px rgba(0,0,0,0.3); background: white; overflow: hidden; padding: 2px;
+        }
+        .timeline-badge img { width: 100%; height: 100%; object-fit: contain; }
+        .timeline-badge.no-logo { padding: 0; }
+
+        .timeline-info h3 { font-family: var(--font-display); font-weight: 700; font-size: 1.4rem; margin-bottom: 0.2rem; }
+        .timeline-subtitle { color: var(--purple); font-weight: 600; font-size: 1rem; }
+        .timeline-count { padding: 0.5rem 1.2rem; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 2rem; color: var(--text-secondary); font-weight: 700; font-size: 0.9rem; }
+
+        /* --- BARRE DE RECHERCHE --- */
+        .search-container { max-width: 900px; margin: 0 auto 3rem; }
+        .search-wrapper { position: relative; background: var(--bg-secondary); border: 2px solid var(--glass-border); border-radius: 2rem; overflow: hidden; display: flex; align-items: center; box-shadow: 0 10px 40px rgba(0,0,0,0.3); transition: all 0.3s; }
+        .search-wrapper:focus-within { border-color: var(--orange); box-shadow: 0 0 30px rgba(255, 107, 53, 0.3); }
+        .search-icon { margin-left: 1.5rem; color: var(--orange); }
+        .search-input { width: 100%; padding: 1.2rem; background: transparent; border: none; color: var(--text-primary); font-size: 1.1rem; font-family: var(--font-body); outline: none; }
+        .search-results { text-align: center; margin-top: 1rem; padding: 0.5rem 1.5rem; background: linear-gradient(135deg, rgba(255, 107, 53, 0.15), rgba(0, 212, 170, 0.15)); border-radius: 2rem; display: inline-block; color: var(--orange); font-weight: 700; }
+
+        /* --- AUTRES SECTIONS (ENGAGEMENT, AMBITION, FAQ) --- */
+        .engagement-section { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 2rem; padding: 4rem 2rem; text-align: center; max-width: 1000px; margin: 0 auto; }
+        .engagement-text { font-size: clamp(1.1rem, 2.5vw, 1.35rem); line-height: 1.8; color: var(--text-primary); max-width: 800px; margin: 0 auto 2rem; }
+        .engagement-signature { font-family: var(--font-display); font-weight: 900; font-size: 1.5rem; margin-top: 2rem; background: linear-gradient(90deg, var(--teal), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        .ambition-section { background: var(--glass-bg); border: 1px solid var(--glass-border); border-left: 5px solid var(--orange); border-radius: 2rem; padding: 3rem; max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; gap: 2rem; }
+        .ambition-header h3 { font-family: var(--font-display); font-size: 2.2rem; font-weight: 800; margin-bottom: 0.5rem; color: var(--text-primary); }
+        .ambition-subtitle { font-size: 1.2rem; color: var(--orange); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+        .ambition-text { font-size: 1.15rem; line-height: 1.8; color: var(--text-secondary); }
+        .ambition-text strong { color: var(--text-primary); font-weight: 700; }
+
+        @media (min-width: 900px) {
+            .ambition-section { flex-direction: row; align-items: center; text-align: left; }
+            .ambition-header { flex: 1; border-right: 1px solid var(--glass-border); padding-right: 2rem; }
+            .ambition-body { flex: 2; padding-left: 2rem; }
+        }
+
+        .faq-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; max-width: 900px; margin: 0 auto; }
+        @media (min-width: 768px) { .faq-grid { grid-template-columns: repeat(2, 1fr); } }
+        .faq-item { cursor: pointer; transition: all 0.3s ease; padding: 0; }
+        .faq-item:hover { border-color: var(--teal); background: rgba(255, 255, 255, 0.05); }
+        .faq-header { padding: 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+        .faq-question { display: flex; align-items: center; gap: 10px; font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; color: var(--text-primary); }
+        .faq-toggle-icon { transition: transform 0.3s ease; color: var(--text-secondary); }
+        .faq-content { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0, 1, 0, 1); }
+        .faq-body { padding: 0 1.5rem 1.5rem 1.5rem; color: var(--text-secondary); line-height: 1.6; font-size: 0.95rem; border-top: 1px solid rgba(255, 255, 255, 0.05); padding-top: 1rem; }
+        .faq-item.active { border-color: var(--orange); background: rgba(255, 255, 255, 0.08); }
+        .faq-item.active .faq-toggle-icon { transform: rotate(45deg); color: var(--orange); }
+        .faq-item.active .faq-content { max-height: 300px; transition: max-height 0.4s ease-in-out; }
+
+        /* ==========================================================================
+           9. FOOTER & DOCK
+           ========================================================================== */
+        
+        footer { padding: 6rem 1rem; text-align: center; border-top: 1px solid var(--glass-border); margin-top: 6rem; background: linear-gradient(to top, var(--bg-secondary), transparent); }
+        footer h3 { font-family: var(--font-display); font-size: 3rem; font-weight: 900; margin-bottom: 1.5rem; }
+        .footer-buttons { display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2.5rem; }
+        .copyright { color: var(--text-secondary); opacity: 0.6; }
+
+        .dock-nav {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 1000;
+            display: flex; align-items: center; gap: 10px; padding: 12px 16px;
+            background: var(--dock-bg); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+            border: 1px solid var(--dock-border); border-radius: 100px; box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+            transition: all 0.4s cubic-bezier(0.25, 1.5, 0.5, 1);
+        }
+        .dock-nav:hover { transform: translateX(-50%) scale(1.03); }
+        .dock-item {
+            display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-secondary);
+            text-decoration: none; width: 55px; height: 55px; border-radius: 50%; transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); position: relative;
+        }
+        .dock-item:hover { background: rgba(255, 255, 255, 0.15); color: var(--text-primary); transform: translateY(-15px) scale(1.2); box-shadow: 0 10px 25px rgba(0,0,0,0.3); z-index: 10; }
+        .dock-item.active { color: white; background: linear-gradient(135deg, var(--orange), var(--pink)); box-shadow: 0 5px 20px rgba(255, 107, 53, 0.5); transform: translateY(-5px); }
+        .dock-item i { width: 24px; height: 24px; transition: all 0.3s; }
+        .dock-item span {
+            position: absolute; top: -45px; background: rgba(0,0,0,0.9); color: white; padding: 5px 12px; border-radius: 12px;
+            font-size: 0.8rem; font-weight: 600; opacity: 0; transform: translateY(10px); transition: all 0.3s; pointer-events: none; white-space: nowrap; backdrop-filter: blur(5px);
+        }
+        .dock-item:hover span { opacity: 1; transform: translateY(0); }
+
+        .controls-panel { position: fixed; top: 2rem; right: 2rem; z-index: 100; display: flex; gap: 0.8rem; }
+        .control-btn {
+            display: flex; align-items: center; gap: 0.5rem; padding: 0.8rem 1.4rem; background: var(--glass-bg);
+            border: 1px solid var(--glass-border); border-radius: 2rem; color: var(--text-primary); font-family: var(--font-body);
+            font-size: 0.9rem; font-weight: 700; cursor: pointer; transition: all 0.3s ease; backdrop-filter: blur(10px);
+        }
+        .control-btn:hover { background: rgba(255, 107, 53, 0.15); border-color: var(--orange); transform: translateY(-2px); box-shadow: 0 5px 15px rgba(255, 107, 53, 0.2); }
+
+        .hidden { display: none; }
+        .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.5, 0, 0, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        @media (max-width: 640px) {
+            .hero-title { font-size: 2.8rem; }
+            .controls-panel { top: 1rem; right: 1rem; gap: 0.5rem; }
+            .control-btn span { display: none; }
+            .control-btn { padding: 0.8rem; }
+            .dock-nav { padding: 8px 10px; bottom: 20px; width: 95%; justify-content: space-between; }
+            .dock-item { width: 42px; height: 42px; }
+            .dock-item span { display: none; }
+            .timeline-header { flex-direction: column; align-items: flex-start; gap: 1rem; padding: 1.5rem 1rem; }
+            .timeline-header > div:first-child { width: 100%; justify-content: flex-start; }
+            .timeline-header > div:last-child { width: 100%; justify-content: space-between; margin-top: 0.5rem; }
+            .timeline-badge { width: 50px; height: 50px; }
+            .timeline-info h3 { font-size: 1.2rem; }
+            .exp-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+            .exp-action { align-self: flex-end; margin-top: -30px; }
+        }
+
+        /* --- SOBRE MODE OVERRIDES --- */
+        body.sober-mode .orb, body.sober-mode .cursor-glow { display: none !important; }
+        body.sober-mode .gradient-text { background: none; -webkit-text-fill-color: var(--text-primary); color: var(--text-primary); filter: none; }
+        body.sober-mode .profile-image { box-shadow: 0 10px 40px rgba(0,0,0,0.1); background: white; border-color: transparent; animation: none; }
+        body.sober-mode .btn-primary { background: #1d1d1f; color: white; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
+        body.sober-mode .category-card:hover { transform: none; box-shadow: 0 5px 15px rgba(0,0,0,0.05); background: white; border-color: rgba(0,0,0,0.1); }
+    </style>
+</head>
+<body id="home">
+    
+    <!-- MODAL UNIFIÉE (Pour Atouts, Expériences et Formations) -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">
+                <i data-lucide="x" width="24"></i>
+            </button>
+            <h3 class="modal-title" id="modalTitle">Titre</h3>
+            <div class="modal-text" id="modalBody">Description...</div>
+        </div>
+    </div>
+
+    <div class="controls-panel">
+        <button class="control-btn" id="langToggle" title="Switch language">
+            <i data-lucide="languages" width="20"></i>
+            <span id="langText">EN</span>
+        </button>
+        <button class="control-btn" id="modeToggle" title="Mode sobre">
+            <i data-lucide="sun" width="20" id="modeIcon"></i>
+            <span id="modeText" data-translate="sober_mode">Clair</span>
+        </button>
+    </div>
+
+    <div class="cursor-glow" id="cursorGlow"></div>
+    <div class="grid-background"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                
+                <div data-translate="availability_badge" style="margin-bottom: 2rem; display: inline-block; padding: 0.5rem 1.5rem; background: rgba(0, 212, 170, 0.15); border: 1px solid var(--teal); border-radius: 50px; color: var(--teal); font-weight: 700; font-size: 0.9rem;">
+                    🟢 DISPONIBLE JUILLET 2026
+                </div>
+
+                <div class="profile-image-wrapper">
+                    <div class="profile-image">
+                        <img src="https://image2url.com/r2/default/images/1770799183904-7e4b3ed7-6822-4025-b40b-b106a046896b.png" alt="Florian Bouchart">
+                    </div>
+                </div>
+
+                <h1 class="hero-title">
+                    <span class="gradient-text" data-translate="hero_badge">CHEF DE PROJET IT & DIGITAL – Omnicanalité & Innovation</span>
+                </h1>
+
+                <div style="font-family: var(--font-display); font-size: clamp(1.5rem, 3vw, 2.5rem); font-weight: 700; color: var(--text-secondary); margin-bottom: 2rem; letter-spacing: 0.1em; text-transform: uppercase;">
+                    FLORIAN BOUCHART
+                </div>
+
+                <p class="hero-description" data-translate="hero_description">
+                    Bienvenue sur mon CV digital ! Je suis Florian, Master 2 en Gestion de Projet avec 3 ans d'expérience opérationnelle. À travers ce portfolio, vous découvrirez comment j'allie la <span class="highlight">rigueur de la gestion de projet d'une grande entreprise (GRDF)</span>, l'esprit <span class="highlight">intrapreneurial (Desrèves)</span> et mon appétence pour les <span class="highlight">environnements Tech & Digitaux</span> pour piloter vos projets de la conception à la mise en production.
+                </p>
+
+                <div class="cta-container">
+                    <a href="https://image2url.com/r2/default/documents/1771518211971-de4865a0-955a-455e-8d50-28aede8ab6a1.pdf" target="_blank" class="btn btn-primary" id="cvLink">
+                        <i data-lucide="file-text" width="20"></i>
+                        <span class="cv-text" data-translate="btn_cv">Voir mon CV</span>
+                    </a>
+                    <a href="https://www.linkedin.com/in/florian-bouchart" target="_blank" class="btn btn-secondary">
+                        <i data-lucide="linkedin" width="20"></i>
+                        LinkedIn
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <a href="#parcours-pro" class="scroll-down">
+            <i data-lucide="chevrons-down" width="30"></i>
+        </a>
+    </section>
+
+    <!-- SECTION EXPÉRIENCES (MODAL MODE) -->
+    <section id="parcours-pro">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2 class="section-title gradient-text" data-translate="section_pro_title">EXPÉRIENCE & PROJETS</h2>
+                <p class="section-subtitle" data-translate="section_pro_subtitle">Ce que j'ai fait et ce que cela apporte à vos projets</p>
+            </div>
+
+            <div class="experience-grid">
+                <!-- GRDF -->
+                <div class="experience-card card-glass reveal" style="--card-color: var(--orange);" onclick="openExpModal(this, 'var(--orange)')">
+                    <div class="exp-header">
+                        <div class="exp-icon">
+                            <img src="https://image2url.com/r2/default/images/1770845415458-fa73a2c3-87e8-43ff-8628-6fc1cfc63e5d.png" alt="GRDF Logo">
+                        </div>
+                        <div class="exp-info">
+                            <h3 data-translate="exp_grdf_title">Chargé de Portefeuille & Projets (Alternance)</h3>
+                            <div class="exp-period" data-translate="exp_grdf_period">2023 - 2026 • 3 ans</div>
+                            <div class="exp-company">GRDF - Lille, France</div>
+                        </div>
+                        <div class="exp-action"><i data-lucide="external-link" width="20"></i></div>
+                    </div>
+                    <div class="exp-hidden-data" style="display: none;">
+                        <div class="exp-desc" data-translate="exp_grdf_desc">
+                            <ul style='list-style-type: disc; margin-left: 1.5rem; display: flex; flex-direction: column; gap: 0.8rem;'>
+                                <li><strong>Analyse des besoins & Reporting :</strong> Automatisation (VBA, Excel) pour la génération des documents de reporting concession (CRAC) sur plus de <strong>650 contrats</strong> dans le Nord-Ouest, traduisant les besoins internes en solutions efficaces.</li>
+                                <li><strong>Suivi Qualité, Coûts, Délais (QCD) :</strong> Études de rentabilité et suivi budgétaire d'un portefeuille d'investissements allant jusqu'à <strong>800 000 €</strong>.</li>
+                                <li><strong>Coordination & Data :</strong> Production et structuration des KPIs et des fiches de synthèse à destination des parties prenantes (communes), justifiant contractuellement les investissements réalisés.</li>
+                            </ul>
+                        </div>
+                        <div class="exp-tags">
+                            <div class="exp-tag" style="background: rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); padding: 0.4rem 1rem; border-radius: 2rem; font-size: 0.85rem;" data-translate="tag_kpi">Analyse des besoins</div>
+                            <div class="exp-tag" style="background: rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); padding: 0.4rem 1rem; border-radius: 2rem; font-size: 0.85rem;" data-translate="tag_contracts">Suivi budgétaire</div>
+                            <div class="exp-tag" style="background: rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); padding: 0.4rem 1rem; border-radius: 2rem; font-size: 0.85rem;" data-translate="tag_relations">Data & Reporting</div>
+                            <div class="exp-tag" style="background: rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); padding: 0.4rem 1rem; border-radius: 2rem; font-size: 0.85rem;" data-translate="tag_reporting">Coordination</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DESREVES -->
+                <div class="experience-card card-glass reveal" style="--card-color: var(--teal);" onclick="openExpModal(this, 'var(--teal)')">
+                    <div class="exp-header">
+                        <div class="exp-icon">
+                            <img src="https://image2url.com/r2/default/images/1770846729486-db125a45-ffa2-476b-999b-dd9ab99bef16.png" alt="Desrèves Logo">
+                        </div>
+                        <div class="exp-info">
+                            <h3 data-translate="exp_desreves_title">Créateur & Chef de Projet Entrepreneurial</h3>
+                            <div class="exp-period" data-translate="exp_desreves_period">2024 - Aujourd'hui</div>
+                            <div class="exp-company" data-translate="exp_desreves_comp">Desrèves - Marque de vêtements</div>
+                        </div>
+                        <div class="exp-action"><i data-lucide="external-link" width="20"></i></div>
+                    </div>
+                    <div class="exp-hidden-data" style="display: none;">
+                        <div class="exp-desc" data-translate="exp_desreves_desc">
+                            <ul style='list-style-type: disc; margin-left: 1.5rem; display: flex; flex-direction: column; gap: 0.8rem;'>
+                                <li><strong>Intrapreneuriat & Omnicanalité :</strong> Lancement d'un MVP et d'un écosystème e-commerce avec approche <em>Test & Learn</em>, de la conception à la mise en production.</li>
+                                <li><strong>Gestion Multi-acteurs :</strong> Coordination complète de l'écosystème (fournisseurs, IT, designers, prestataires externes, photographes).</li>
+                                <li><strong>Trafic & Acquisition :</strong> Pilotage data-driven (pics à <strong>100k visites/mois</strong>), optimisation de l'UX/UI et orientation ROI continue.</li>
+                            </ul>
+                        </div>
+                        <div class="exp-tags">
+                            <div class="exp-tag" style="background: rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); padding: 0.4rem 1rem; border-radius: 2rem; font-size: 0.85rem;" data-translate="tag_entrepreneurship">Déploiement Digital</div>
+                            <div class="exp-tag" style="background: rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); padding: 0.4rem 1rem; border-radius: 2rem; font-size: 0.85rem;" data-translate="tag_product_design">Approche Test & Learn</div>
+                            <div class="exp-tag" style="background: rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); padding: 0.4rem 1rem; border-radius: 2rem; font-size: 0.85rem;" data-translate="tag_web_dev">E-commerce</div>
+                            <div class="exp-tag" style="background: rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); padding: 0.4rem 1rem; border-radius: 2rem; font-size: 0.85rem;" data-translate="tag_suppliers">Coordination Prestataires</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BDE -->
+                <div class="experience-card card-glass reveal" style="--card-color: var(--purple);" onclick="openExpModal(this, 'var(--purple)')">
+                    <div class="exp-header">
+                        <div class="exp-icon">
+                            <img src="https://image2url.com/r2/default/images/1770848861445-5b22e6f8-0fae-469e-8cc1-2bfe07855dca.png" alt="BDE IAE Logo">
+                        </div>
+                        <div class="exp-info">
+                            <h3 data-translate="exp_bde_title">Directeur de Projet Associatif (Président)</h3>
+                            <div class="exp-period" data-translate="exp_bde_period">2022 - 2025 • 3 ans</div>
+                            <div class="exp-company">BDE IAE Valenciennes</div>
+                        </div>
+                        <div class="exp-action"><i data-lucide="external-link" width="20"></i></div>
+                    </div>
+                    <div class="exp-hidden-data" style="display: none;">
+                        <div class="exp-desc" data-translate="exp_bde_desc">
+                            <ul style='list-style-type: disc; margin-left: 1.5rem; display: flex; flex-direction: column; gap: 0.8rem;'>
+                                <li><strong>Management Transversal :</strong> Direction d'une équipe pluridisciplinaire d'<strong>une trentaine de bénévoles</strong>, organisation des plannings et jalons événementiels.</li>
+                                <li><strong>Contrôle Budgétaire :</strong> Gestion stricte d'un budget global de <strong>17 000 €</strong> (générant <strong>22 000 € de CA</strong>, en proposant des tarifs étudiants réduits).</li>
+                                <li><strong>Innovation & Partenariats :</strong> Pilotage d'un projet textile co-créé en collaboration avec la marque Amoses (+80k followers sur Instagram).</li>
+                            </ul>
+                        </div>
+                        <div class="exp-tags">
+                            <div class="exp-tag" style="background: rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); padding: 0.4rem 1rem; border-radius: 2rem; font-size: 0.85rem;" data-translate="tag_leadership">Management d'équipe</div>
+                            <div class="exp-tag" style="background: rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); padding: 0.4rem 1rem; border-radius: 2rem; font-size: 0.85rem;" data-translate="tag_budget">Gestion des plannings</div>
+                            <div class="exp-tag" style="background: rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); padding: 0.4rem 1rem; border-radius: 2rem; font-size: 0.85rem;" data-translate="tag_events">Gestion des risques</div>
+                            <div class="exp-tag" style="background: rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); padding: 0.4rem 1rem; border-radius: 2rem; font-size: 0.85rem;" data-translate="tag_team_mgmt">Partenariats</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- E-SPORT -->
+                <div class="experience-card card-glass reveal" style="--card-color: var(--pink);" onclick="openExpModal(this, 'var(--pink)')">
+                    <div class="exp-header">
+                        <div class="exp-icon no-img" style="background: linear-gradient(135deg, #ff006e, #d00060);">
+                            <i data-lucide="gamepad-2" width="32" style="color: white;"></i>
+                        </div>
+                        <div class="exp-info">
+                            <h3 data-translate="exp_esport_title">Coordinateur de Projet (E-sport)</h3>
+                            <div class="exp-period" data-translate="exp_esport_period">2018 - 2021 • Création à mes 15 ans</div>
+                            <div class="exp-company" data-translate="exp_esport_comp">Structure Associative</div>
+                        </div>
+                        <div class="exp-action"><i data-lucide="external-link" width="20"></i></div>
+                    </div>
+                    <div class="exp-hidden-data" style="display: none;">
+                        <div class="exp-desc" data-translate="exp_esport_desc">
+                            <ul style='list-style-type: disc; margin-left: 1.5rem; display: flex; flex-direction: column; gap: 0.8rem;'>
+                                <li><strong>Environnement Tech :</strong> Management à distance d'un roster de <strong>15 joueurs</strong> compétitifs via des outils digitaux (Discord, plateformes de tournois).</li>
+                                <li><strong>Gestion d'Événements :</strong> Planification des déplacements en LAN (Lyon e-Sport) et synchronisation des plannings de compétition.</li>
+                                <li><strong>Budget & Stratégie :</strong> Organisation de tournois en ligne dotés de cash prize (jusqu'à <strong>1000€</strong>) et stratégie d'acquisition d'audience.</li>
+                            </ul>
+                        </div>
+                        <div class="exp-tags">
+                            <div class="exp-tag" style="background: rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); padding: 0.4rem 1rem; border-radius: 2rem; font-size: 0.85rem;" data-translate="tag_early_entrepreneurship">Management à distance</div>
+                            <div class="exp-tag" style="background: rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); padding: 0.4rem 1rem; border-radius: 2rem; font-size: 0.85rem;" data-translate="tag_management">Environnement Digital</div>
+                            <div class="exp-tag" style="background: rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); padding: 0.4rem 1rem; border-radius: 2rem; font-size: 0.85rem;" data-translate="tag_event_org">Logistique</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- INTERNATIONAL -->
+                <div class="experience-card card-glass reveal" style="--card-color: var(--yellow);" onclick="openExpModal(this, 'var(--yellow)')">
+                    <div class="exp-header">
+                        <div class="exp-icon no-img" style="background: linear-gradient(135deg, #ffbe0b, #ff9e00);">
+                            <i data-lucide="globe" width="32" style="color: white;"></i>
+                        </div>
+                        <div class="exp-info">
+                            <h3 data-translate="exp_intl_title">Formations intensives à l'étranger</h3>
+                            <div class="exp-period" data-translate="exp_intl_period">Juillet - Août 2024</div>
+                            <div class="exp-company" data-translate="exp_intl_comp">Erasmus+ (Finlande & Roumanie)</div>
+                        </div>
+                        <div class="exp-action"><i data-lucide="external-link" width="20"></i></div>
+                    </div>
+                    <div class="exp-hidden-data" style="display: none;">
+                        <div class="exp-desc">
+                            <div style="margin-bottom: 1.5rem; line-height: 1.8;" data-translate="exp_intl_desc">
+                                <ul style='list-style-type: disc; margin-left: 1.5rem; display: flex; flex-direction: column; gap: 0.8rem;'>
+                                    <li><strong>🇫🇮 Vaasa, Finlande :</strong> Entrepreneurship and Venturing (Vaasan yliopisto) - Focus sur l'intrapreneuriat et le développement de solutions.</li>
+                                    <li><strong>🇷🇴 Cluj-Napoca, Roumanie :</strong> Innovation, Design-Thinking and Entrepreneurship (Universitatea Babes-Bolyai) - Processus d'idéation, prototypage et test.</li>
+                                </ul>
+                            </div>
+                            <div style="display: flex; gap: 15px; margin-top: 15px; margin-bottom: 2rem;">
+                                <img src="https://image2url.com/r2/default/images/1770845625436-a5d78456-5192-4fa3-acb0-7b68d63a9443.png" alt="Vaasa Logo" style="height: 40px; background: white; padding: 2px; border-radius: 8px;">
+                                <img src="https://image2url.com/r2/default/images/1770845505974-51235c8a-89de-4332-ab3b-4ff65902abd0.png" alt="UBBFSEGA Logo" style="height: 40px; background: white; padding: 2px; border-radius: 8px;">
+                            </div>
+                        </div>
+                        <div class="exp-tags">
+                            <div class="exp-tag" style="background: rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); padding: 0.4rem 1rem; border-radius: 2rem; font-size: 0.85rem;" data-translate="tag_mobility">Design-Thinking</div>
+                            <div class="exp-tag" style="background: rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); padding: 0.4rem 1rem; border-radius: 2rem; font-size: 0.85rem;" data-translate="tag_innovation">Prototypage</div>
+                            <div class="exp-tag" style="background: rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); padding: 0.4rem 1rem; border-radius: 2rem; font-size: 0.85rem;" data-translate="tag_design_thinking">Innovation</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="vision">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2 class="section-title gradient-text" data-translate="section_vision_title">MA VISION DE LA CHEFFERIE DE PROJET</h2>
+                <p class="section-subtitle" data-translate="section_vision_subtitle">Mes convictions pour faire réussir vos initiatives IT & Business</p>
+            </div>
+
+            <div class="vision-grid">
+                <div class="vision-card card-glass reveal">
+                    <div class="vision-icon" style="background: linear-gradient(135deg, #00d4aa, #00a896);">
+                        <i data-lucide="layers" width="32"></i>
+                    </div>
+                    <h3 style="color: var(--teal);" data-translate="vision_1_title">Maîtrise du cycle de vie</h3>
+                    <p data-translate="vision_1_desc">
+                        De la conception (rédaction du cahier des charges) à la mise en production, j'assure le pilotage complet du projet. Je définis les jalons, sécurise les phases de développement et encadre la recette pour garantir un livrable conforme aux attentes.
+                    </p>
+                </div>
+
+                <div class="vision-card card-glass reveal">
+                    <div class="vision-icon" style="background: linear-gradient(135deg, #6a4c93, #8b5cf6);">
+                        <i data-lucide="git-merge" width="32"></i>
+                    </div>
+                    <h3 style="color: var(--purple);" data-translate="vision_2_title">Le trait d'union Métier / IT</h3>
+                    <p data-translate="vision_2_desc">
+                        Un Chef de Projet doit être capable de parler aux développeurs comme aux équipes métiers. Mon rôle est de traduire les besoins opérationnels en solutions concrètes (spécifications) et d'assurer une coordination fluide entre les experts internes et externes.
+                    </p>
+                </div>
+
+                <div class="vision-card card-glass reveal">
+                    <div class="vision-icon" style="background: linear-gradient(135deg, #ff006e, #d00060);">
+                        <i data-lucide="rocket" width="32"></i>
+                    </div>
+                    <h3 style="color: var(--pink);" data-translate="vision_3_title">Agilité & Intrapreneuriat</h3>
+                    <p data-translate="vision_3_desc">
+                        Habitué à l'esprit start-up, j'encourage l'expérimentation, les méthodes agiles (test & learn, itérations) et la curiosité. J'aime sortir des sentiers battus pour proposer des améliorations continues et innover dans les approches.
+                    </p>
+                </div>
+
+                <div class="vision-card card-glass reveal">
+                    <div class="vision-icon" style="background: linear-gradient(135deg, #ff6b35, #f77f00);">
+                        <i data-lucide="bar-chart-3" width="32"></i>
+                    </div>
+                    <h3 style="color: var(--orange);" data-translate="vision_4_title">Pilotage par la valeur (ROI)</h3>
+                    <p data-translate="vision_4_desc">
+                        Chaque projet doit avoir un impact mesurable. Je m'appuie sur le suivi de la qualité, des coûts et des délais (QCD) ainsi que sur la data pour animer les comités de pilotage (COPIL), arbitrer les priorités et garantir la création de valeur.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="atouts">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2 class="section-title gradient-text" data-translate="section_atouts_title">MES ATOUTS & DÉFIS</h2>
+                <p class="section-subtitle" data-translate="section_atouts_subtitle">Transparence totale sur ma façon de collaborer</p>
+            </div>
+
+            <div class="traits-container">
+                <div class="trait-card card-glass strengths reveal">
+                    <div class="trait-header">
+                        <i data-lucide="check-circle" width="30" style="color: var(--teal);"></i>
+                        <span class="trait-badge green" data-translate="lbl_forces">FORCES (ASSETS)</span>
+                    </div>
+                    <div class="trait-list">
+                        <div class="trait-item" onclick="openTrait('force_1', 'var(--teal)')">
+                            <i data-lucide="zap" width="20" style="color: var(--teal);"></i>
+                            <span data-translate="force_1"><strong>Esprit Intrapreneur</strong> — Capable de tester, itérer, et de faire bouger les lignes avec autonomie.</span>
+                        </div>
+                        <div class="trait-item" onclick="openTrait('force_2', 'var(--teal)')">
+                            <i data-lucide="zap" width="20" style="color: var(--teal);"></i>
+                            <span data-translate="force_2"><strong>Traducteur Métier/IT</strong> — Facilité à lier les enjeux opérationnels globaux aux réalités techniques.</span>
+                        </div>
+                        <div class="trait-item" onclick="openTrait('force_3', 'var(--teal)')">
+                            <i data-lucide="zap" width="20" style="color: var(--teal);"></i>
+                            <span data-translate="force_3"><strong>Communication & Synthèse</strong> — Animation de comités et rédaction de documentations claires.</span>
+                        </div>
+                        <div class="trait-item" onclick="openTrait('force_4', 'var(--teal)')">
+                            <i data-lucide="zap" width="20" style="color: var(--teal);"></i>
+                            <span data-translate="force_4"><strong>Travail en Équipe</strong> — Créer un environnement collaboratif et bienveillant pour fédérer les acteurs.</span>
+                        </div>
+                        <div class="trait-item" onclick="openTrait('force_5', 'var(--teal)')">
+                            <i data-lucide="zap" width="20" style="color: var(--teal);"></i>
+                            <span data-translate="force_5"><strong>Méthodique & Rigoureux</strong> — Gestion précise des plannings, budgets et comparatifs technico-économiques.</span>
+                        </div>
+                        <div class="trait-item" onclick="openTrait('force_6', 'var(--teal)')">
+                            <i data-lucide="zap" width="20" style="color: var(--teal);"></i>
+                            <span data-translate="force_6"><strong>Curiosité Tech/Digitale</strong> — Appétence forte pour l'omnicanalité, l'IT et les nouveaux outils.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="trait-card card-glass weaknesses reveal">
+                    <div class="trait-header">
+                        <i data-lucide="alert-circle" width="30" style="color: var(--yellow);"></i>
+                        <span class="trait-badge amber" data-translate="lbl_weaknesses">POINTS D'ATTENTION (REALITY CHECK)</span>
+                    </div>
+                    <div class="trait-list">
+                        <div class="trait-item" onclick="openTrait('weak_1', 'var(--yellow)')">
+                            <i data-lucide="triangle-alert" width="20" style="color: var(--yellow);"></i>
+                            <span data-translate="weak_1"><strong>Biais d'action</strong> — Mon côté "maker" me pousse à avancer vite ; j'apprends à temporiser face aux process internes.</span>
+                        </div>
+                        <div class="trait-item" onclick="openTrait('weak_2', 'var(--yellow)')">
+                            <i data-lucide="triangle-alert" width="20" style="color: var(--yellow);"></i>
+                            <span data-translate="weak_2"><strong>Limites de l'expertise technique pure</strong> — Je comprends l'architecture IT, mais je ne suis pas développeur. Je m'appuie sur les experts.</span>
+                        </div>
+                        <div class="trait-item" onclick="openTrait('weak_3', 'var(--yellow)')">
+                            <i data-lucide="triangle-alert" width="20" style="color: var(--yellow);"></i>
+                            <span data-translate="weak_3"><strong>Besoin de sens</strong> — J'ai besoin de comprendre l'impact (économique, social, environnemental) pour m'investir pleinement.</span>
+                        </div>
+                        <div class="trait-item" onclick="openTrait('weak_4', 'var(--yellow)')">
+                            <i data-lucide="triangle-alert" width="20" style="color: var(--yellow);"></i>
+                            <span data-translate="weak_4"><strong>L'art de la délégation</strong> — Ayant souvent porté des projets de A à Z, j'aiguise ma posture de "faire faire".</span>
+                        </div>
+                        <div class="trait-item" onclick="openTrait('weak_5', 'var(--yellow)')">
+                            <i data-lucide="triangle-alert" width="20" style="color: var(--yellow);"></i>
+                            <span data-translate="weak_5"><strong>Onboarding Processus</strong> — Curieux, je m'adapte vite à Jira ou Notion, mais je devrai assimiler vos frameworks spécifiques.</span>
+                        </div>
+                        <div class="trait-item" onclick="openTrait('weak_6', 'var(--yellow)')">
+                            <i data-lucide="triangle-alert" width="20" style="color: var(--yellow);"></i>
+                            <span data-translate="weak_6"><strong>Gestion du flou initial</strong> — Je ressens le besoin de structurer rapidement les avant-projets pour sécuriser l'avancement.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION COMPETENCES -->
+    <section id="competences">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2 class="section-title gradient-text" data-translate="section_skills_title">COMPÉTENCES</h2>
+                <p class="section-subtitle" data-translate="section_skills_subtitle">Mes outils et expertises projet</p>
+            </div>
+
+            <div class="skills-grid">
+                <div class="skill-category card-glass reveal">
+                    <h3 data-translate="skill_cat_mgmt">
+                        <i data-lucide="briefcase" width="24" style="color: var(--orange);"></i>
+                        Méthodologie & Pilotage
+                    </h3>
+                    <div class="skill-tags">
+                        <div class="skill-tag" data-translate="skill_agile">Gestion Agile (Scrum) & Cycle en V</div>
+                        <div class="skill-tag">Rédaction de Cahier des Charges</div>
+                        <div class="skill-tag">Animation de COPIL / Réunions</div>
+                        <div class="skill-tag" data-translate="skill_kpi">Suivi Qualité, Coûts, Délais (QCD)</div>
+                        <div class="skill-tag" data-translate="skill_risk">Gestion des risques & Jalons</div>
+                        <div class="skill-tag" data-translate="skill_team">Coordination Multi-acteurs</div>
+                        <div class="skill-tag" data-translate="skill_scrum">Cadrage, Recette, Mise en prod.</div>
+                    </div>
+                </div>
+
+                <div class="skill-category card-glass reveal">
+                    <h3 data-translate="skill_cat_data">
+                        <i data-lucide="monitor-smartphone" width="24" style="color: var(--purple);"></i>
+                        Environnement IT & Digital
+                    </h3>
+                    <div class="skill-tags">
+                        <div class="skill-tag" data-translate="skill_api">Compréhension Architecture IT & API</div>
+                        <div class="skill-tag" data-translate="skill_excel">Excel Avancé (TCD, Macros) & Power BI</div>
+                        <div class="skill-tag">Notions PIM/MDM & Data Produit</div>
+                        <div class="skill-tag" data-translate="skill_dash">Omnicanalité & Retail</div>
+                        <div class="skill-tag" data-translate="skill_data">Veille Technologique</div>
+                        <div class="skill-tag" data-translate="skill_control">UX / UI (Sensibilité)</div>
+                    </div>
+                </div>
+
+                <div class="skill-category card-glass reveal">
+                    <h3 data-translate="skill_cat_tools">
+                        <i data-lucide="sparkles" width="24" style="color: var(--teal);"></i>
+                        Outils & IA
+                    </h3>
+                    <div class="skill-tags">
+                        <div class="skill-tag" data-translate="skill_workflows">Jira / Notion / Linear</div>
+                        <div class="skill-tag" data-translate="skill_ticketing">Outils de ticketing & Suivi de bugs</div>
+                        <div class="skill-tag" data-translate="skill_digital">Prompting IA avancé (Gains de prod.)</div>
+                        <div class="skill-tag" data-translate="skill_ppt">Outils de présentation (PPT, Canva, Gamma, NotebookLM)</div>
+                    </div>
+                </div>
+
+                <div class="skill-category card-glass reveal">
+                    <h3 data-translate="skill_cat_tech">
+                        <i data-lucide="code" width="24" style="color: var(--pink);"></i>
+                        Bases Techniques
+                    </h3>
+                    <div class="skill-tags">
+                        <div class="skill-tag" data-translate="skill_css">HTML/CSS (Fondamentaux)</div>
+                        <div class="skill-tag" data-translate="skill_liquid">Liquid (Architecture E-commerce Shopify)</div>
+                        <div class="skill-tag" data-translate="skill_r">VBA (Bases)</div>
+                        <div class="skill-tag">Suite Adobe / Figma (Notions)</div>
+                    </div>
+                </div>
+
+                <div class="skill-category card-glass reveal">
+                    <h3>
+                        <i data-lucide="users" width="24" style="color: var(--yellow);"></i>
+                        Soft Skills
+                    </h3>
+                    <div class="skill-tags">
+                        <div class="skill-tag" data-translate="skill_disc">Autonomie & Curiosité</div>
+                        <div class="skill-tag" data-translate="skill_com">Capacité d'analyse et de synthèse</div>
+                        <div class="skill-tag" data-translate="skill_prob">Excellente communication orale/écrite</div>
+                        <div class="skill-tag" data-translate="skill_listen">Esprit d'équipe & Bienveillance</div>
+                        <div class="skill-tag" data-translate="skill_result">Force de proposition</div>
+                        <div class="skill-tag">Rigueur Méthodologique</div>
+                    </div>
+                </div>
+
+                <div class="skill-category card-glass reveal">
+                    <h3 data-translate="skill_cat_lang">
+                        <i data-lucide="globe" width="24" style="color: var(--teal);"></i>
+                        Langues
+                    </h3>
+                    <div class="skill-tags">
+                        <div class="skill-tag" data-translate="lang_fr">🇫🇷 Français (Natif)</div>
+                        <div class="skill-tag" data-translate="lang_en">🇬🇧 Anglais (B2)</div>
+                        <div class="skill-tag" data-translate="lang_es">🇪🇸 Espagnol (A2)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION FORMATION (Mode Popup) -->
+    <section id="formation">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2 class="section-title gradient-text" data-translate="section_edu_title">FORMATION ACADÉMIQUE</h2>
+                <p class="section-subtitle" data-translate="section_edu_subtitle">Mon socle théorique en Management de Projets & IT</p>
+            </div>
+
+            <div class="search-container reveal">
+                <div class="search-wrapper">
+                    <i data-lucide="search" width="24" class="search-icon"></i>
+                    <input 
+                        type="text" 
+                        class="search-input" 
+                        id="searchInput"
+                        placeholder="Rechercher un cours (ex: Finance, SI, Data, Agile...)"
+                    >
+                </div>
+                <div id="searchResults" class="search-results hidden"></div>
+            </div>
+
+            <div class="timeline" id="timeline"></div>
+        </div>
+    </section>
+
+    <!-- SECTION AMBITION (HYBRIDE PROJET) -->
+    <section id="ambition" class="reveal">
+        <div class="container">
+            <div class="ambition-section">
+                <div class="ambition-header">
+                    <h3 data-translate="ambition_title">MON ENGAGEMENT / MON PROFIL</h3>
+                    <div class="ambition-subtitle" data-translate="ambition_subtitle">L'avantage d'un Chef de Projet hybride</div>
+                </div>
+                <div class="ambition-body">
+                    <p class="ambition-text" data-translate="ambition_text">
+                        Mon parcours allie la <strong>rigueur méthodologique d'une grande entreprise</strong> (GRDF) et l'<strong>agilité d'un créateur</strong> (Desrèves). 
+                        Je cherche à intégrer vos équipes pour piloter des projets IT, Digitaux ou d'Innovation, en coordonnant les acteurs (DSI, métiers, prestataires) et en garantissant que la solution technique réponde parfaitement au besoin métier, dans le respect des coûts et des délais.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION FAQ / Q&A -->
+    <section id="faq">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2 class="section-title gradient-text" data-translate="section_faq_title">QUESTIONS FRÉQUENTES</h2>
+                <p class="section-subtitle" data-translate="section_faq_subtitle">Anticipons les détails logistiques</p>
+            </div>
+
+            <div class="faq-grid">
+                <div class="faq-item card-glass reveal">
+                    <div class="faq-header" onclick="toggleFaq(this)">
+                        <div class="faq-question">
+                            <i data-lucide="calendar-clock" style="color: var(--orange);"></i>
+                            <span data-translate="faq_q1">Quand êtes-vous disponible ?</span>
+                        </div>
+                        <i data-lucide="plus" class="faq-toggle-icon"></i>
+                    </div>
+                    <div class="faq-content">
+                        <div class="faq-body" data-translate="faq_a1">
+                            Je serai diplômé de mon Master 2 (Université / IAE) et en fin de contrat d'alternance fin juin. Je suis donc <strong>disponible dès début Juillet 2026</strong>.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item card-glass reveal">
+                    <div class="faq-header" onclick="toggleFaq(this)">
+                        <div class="faq-question">
+                            <i data-lucide="map-pin" style="color: var(--teal);"></i>
+                            <span data-translate="faq_q2">Quelle est votre zone de mobilité ?</span>
+                        </div>
+                        <i data-lucide="plus" class="faq-toggle-icon"></i>
+                    </div>
+                    <div class="faq-content">
+                        <div class="faq-body" data-translate="faq_a2">
+                            Je cible prioritairement <strong>Lille, sa métropole</strong>, et la région des Hauts-de-France (Valenciennes). Je reste ouvert à <strong>Paris</strong> ou à un poste en <strong>full télétravail</strong> n'importe où en France.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item card-glass reveal">
+                    <div class="faq-header" onclick="toggleFaq(this)">
+                        <div class="faq-question">
+                            <i data-lucide="file-signature" style="color: var(--purple);"></i>
+                            <span data-translate="faq_q3">Quel type de contrat recherchez-vous ?</span>
+                        </div>
+                        <i data-lucide="plus" class="faq-toggle-icon"></i>
+                    </div>
+                    <div class="faq-content">
+                        <div class="faq-body" data-translate="faq_a3">
+                            Je recherche un <strong>CDI en tant que Chef de Projet (IT / Digital / Innovation)</strong> pour m'investir sur le long terme et piloter vos chantiers stratégiques ou applicatifs.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item card-glass reveal">
+                    <div class="faq-header" onclick="toggleFaq(this)">
+                        <div class="faq-question">
+                            <i data-lucide="wifi" style="color: var(--pink);"></i>
+                            <span data-translate="faq_q4">Télétravail : Full ou Hybride ?</span>
+                        </div>
+                        <i data-lucide="plus" class="faq-toggle-icon"></i>
+                    </div>
+                    <div class="faq-content">
+                        <div class="faq-body" data-translate="faq_a4">
+                            Les deux. Appréciant le travail en équipe et l'agilité, l'hybride est un excellent compromis. J'ai par ailleurs un <strong>setup professionnel</strong> garantissant une productivité et une animation de réunion parfaites à distance.
+                        </div>
+                    </div>
+                </div>
+
+                 <div class="faq-item card-glass reveal" style="grid-column: 1 / -1;">
+                    <div class="faq-header" onclick="toggleFaq(this)">
+                        <div class="faq-question">
+                            <i data-lucide="coins" style="color: var(--yellow);"></i>
+                            <span data-translate="faq_q5">Quelles sont vos prétentions salariales ?</span>
+                        </div>
+                        <i data-lucide="plus" class="faq-toggle-icon"></i>
+                    </div>
+                    <div class="faq-content">
+                        <div class="faq-body" data-translate="faq_a5">
+                            Je suis ouvert à la discussion selon le niveau de responsabilités, le secteur (Banque/Assurance, Retail, Industrie) et le package (RTT, Mutuelle, intéressement). Mes attentes correspondent au marché pour un Bac+5 avec 3 années d'expérience projet.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION LE MOT DE LA FIN -->
+    <section id="final-word" class="reveal">
+        <div class="container">
+            <div class="engagement-section">
+                <i data-lucide="message-circle-heart" width="48" style="color: var(--teal); margin-bottom: 1.5rem;"></i>
+                <h2 style="font-family: var(--font-display); font-size: 2rem; margin-bottom: 1.5rem;" data-translate="final_title">Le mot de la fin</h2>
+                <p class="engagement-text" data-translate="final_text">
+                    La réussite d'un projet IT ne repose pas uniquement sur le code, mais sur la capacité à fédérer des acteurs divers (métiers, développeurs, intégrateurs), à bien comprendre les spécifications, et à ne jamais perdre de vue le besoin utilisateur final. Si mon approche résonne avec la culture de votre entreprise, discutons-en de vive voix. À bientôt !
+                </p>
+                <div class="engagement-signature">Florian Bouchart</div>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact">
+        <div class="container">
+            <h3 class="gradient-text" data-translate="footer_title">Livrons vos projets ensemble</h3>
+            
+            <div class="footer-buttons">
+                <a href="https://www.linkedin.com/in/florian-bouchart" target="_blank" class="btn btn-primary">
+                    <i data-lucide="linkedin" width="20"></i>
+                    LinkedIn
+                </a>
+                <a href="mailto:florian.bouchart@hotmail.fr" class="btn btn-secondary">
+                    <i data-lucide="mail" width="20"></i>
+                    <span class="email-text">florian.bouchart@hotmail.fr</span>
+                </a>
+            </div>
+
+            <p class="copyright" data-translate="footer_copyright">© 2026 Florian Bouchart • Portfolio Chef de Projet</p>
+        </div>
+    </footer>
+
+    <div class="dock-nav">
+        <a href="#home" class="dock-item active">
+            <i data-lucide="home"></i>
+            <span data-translate="nav_home">Accueil</span>
+        </a>
+        <a href="#parcours-pro" class="dock-item">
+            <i data-lucide="briefcase"></i>
+            <span data-translate="nav_career">Parcours</span>
+        </a>
+        <a href="#atouts" class="dock-item">
+            <i data-lucide="cpu"></i>
+            <span data-translate="nav_skills">Atouts</span>
+        </a>
+        <a href="#formation" class="dock-item">
+            <i data-lucide="graduation-cap"></i>
+            <span data-translate="nav_edu">Formation</span>
+        </a>
+        <a href="#ambition" class="dock-item">
+            <i data-lucide="star"></i>
+            <span data-translate="nav_ambition">Profil</span>
+        </a>
+        <a href="#contact" class="dock-item">
+            <i data-lucide="mail"></i>
+            <span data-translate="nav_contact">Contact</span>
+        </a>
+    </div>
+
+    <script>
+        // VARIABLES GLOBALES
+        let currentLang = 'fr';
+        let soberMode = false;
+
+        // DICTIONNAIRE DE TRADUCTION ET DONNÉES COMPLÈTES (FORMAT CHEF DE PROJET)
+        const translations = {
+            fr: {
+                sober_mode: "Clair",
+                availability_badge: "🟢 DISPONIBLE JUILLET 2026",
+                hero_badge: "CHEF DE PROJET IT & DIGITAL – Omnicanalité & Innovation",
+                hero_description: "Bienvenue sur mon CV digital ! Je suis Florian, Master 2 en Gestion de Projet avec 3 ans d'expérience opérationnelle. À travers ce portfolio, vous découvrirez comment j'allie la <span class=\"highlight\">rigueur de la gestion de projet d'une grande entreprise (GRDF)</span>, l'esprit <span class=\"highlight\">intrapreneurial (Desrèves)</span> et mon appétence pour les <span class=\"highlight\">environnements Tech & Digitaux</span> pour piloter vos projets de la conception à la mise en production.",
+                btn_cv: "Voir mon CV",
+                cv_link: "https://image2url.com/r2/default/documents/1771518211971-de4865a0-955a-455e-8d50-28aede8ab6a1.pdf",
+                nav_home: "Accueil",
+                nav_career: "Parcours",
+                nav_skills: "Atouts",
+                nav_edu: "Formation",
+                nav_ambition: "Profil",
+                nav_contact: "Contact",
+                section_pro_title: "EXPÉRIENCE & PROJETS",
+                section_pro_subtitle: "Ce que j'ai fait et ce que cela apporte à vos projets",
+                
+                exp_grdf_title: "Chargé de Portefeuille & Projets (Alternance)",
+                exp_grdf_period: "2023 - 2026 • 3 ans",
+                exp_grdf_desc: "<ul style='list-style-type: disc; margin-left: 1.5rem; display: flex; flex-direction: column; gap: 0.8rem;'><li><strong>Analyse des besoins & Reporting :</strong> Automatisation (VBA, Excel) pour la génération des documents de reporting concession (CRAC) sur plus de <strong>650 contrats</strong> dans le Nord-Ouest, traduisant les besoins internes en solutions efficaces.</li><li><strong>Suivi Qualité, Coûts, Délais (QCD) :</strong> Études de rentabilité et suivi budgétaire d'un portefeuille d'investissements allant jusqu'à <strong>800 000 €</strong>.</li><li><strong>Coordination & Data :</strong> Production et structuration des KPIs et des fiches de synthèse à destination des parties prenantes (communes), justifiant contractuellement les investissements réalisés.</li></ul>",
+                tag_kpi: "Analyse des besoins",
+                tag_contracts: "Suivi budgétaire",
+                tag_relations: "Data & Reporting",
+                tag_reporting: "Coordination",
+                
+                exp_desreves_title: "Créateur & Chef de Projet Entrepreneurial",
+                exp_desreves_period: "2024 - Aujourd'hui",
+                exp_desreves_comp: "Desrèves - Marque de vêtements",
+                exp_desreves_desc: "<ul style='list-style-type: disc; margin-left: 1.5rem; display: flex; flex-direction: column; gap: 0.8rem;'><li><strong>Intrapreneuriat & Omnicanalité :</strong> Lancement d'un MVP et d'un écosystème e-commerce avec approche <em>Test & Learn</em>, de la conception à la mise en production.</li><li><strong>Gestion Multi-acteurs :</strong> Coordination complète de l'écosystème (fournisseurs, IT, designers, prestataires externes, photographes).</li><li><strong>Trafic & Acquisition :</strong> Pilotage data-driven (pics à <strong>100k visites/mois</strong>), optimisation de l'UX/UI et orientation ROI continue.</li></ul>",
+                tag_entrepreneurship: "Déploiement Digital",
+                tag_product_design: "Approche Test & Learn",
+                tag_web_dev: "E-commerce",
+                tag_suppliers: "Coordination Prestataires",
+                
+                exp_bde_title: "Directeur de Projet Associatif (Président)",
+                exp_bde_period: "2022 - 2025 • 3 ans",
+                exp_bde_desc: "<ul style='list-style-type: disc; margin-left: 1.5rem; display: flex; flex-direction: column; gap: 0.8rem;'><li><strong>Management Transversal :</strong> Direction d'une équipe pluridisciplinaire d'<strong>une trentaine de bénévoles</strong>, organisation des plannings et jalons événementiels.</li><li><strong>Contrôle Budgétaire :</strong> Gestion stricte d'un budget global de <strong>17 000 €</strong> (générant <strong>22 000 € de CA</strong>, en proposant des tarifs étudiants réduits).</li><li><strong>Innovation & Partenariats :</strong> Pilotage d'un projet textile co-créé en collaboration avec la marque Amoses (+80k followers sur Instagram).</li></ul>",
+                tag_leadership: "Management d'équipe",
+                tag_budget: "Gestion des plannings",
+                tag_events: "Gestion des risques",
+                tag_team_mgmt: "Partenariats",
+                
+                exp_esport_title: "Coordinateur de Projet (E-sport)",
+                exp_esport_period: "2018 - 2021 • Création à mes 15 ans",
+                exp_esport_comp: "Structure Associative",
+                exp_esport_desc: "<ul style='list-style-type: disc; margin-left: 1.5rem; display: flex; flex-direction: column; gap: 0.8rem;'><li><strong>Environnement Tech :</strong> Management à distance d'un roster de <strong>15 joueurs</strong> compétitifs via des outils digitaux (Discord, plateformes de tournois).</li><li><strong>Gestion d'Événements :</strong> Planification des déplacements en LAN (Lyon e-Sport) et synchronisation des plannings de compétition.</li><li><strong>Budget & Stratégie :</strong> Organisation de tournois en ligne dotés de cash prize (jusqu'à <strong>1000€</strong>) et stratégie d'acquisition d'audience.</li></ul>",
+                tag_early_entrepreneurship: "Management à distance",
+                tag_management: "Environnement Digital",
+                tag_event_org: "Logistique",
+                
+                exp_intl_title: "Formations intensives à l'étranger",
+                exp_intl_period: "Juillet - Août 2024",
+                exp_intl_comp: "Erasmus+ (Finlande & Roumanie)",
+                exp_intl_desc: "<ul style='list-style-type: disc; margin-left: 1.5rem; display: flex; flex-direction: column; gap: 0.8rem;'><li><strong>🇫🇮 Vaasa, Finlande :</strong> Entrepreneurship and Venturing (Vaasan yliopisto) - Focus sur l'intrapreneuriat et le développement de solutions.</li><li><strong>🇷🇴 Cluj-Napoca, Roumanie :</strong> Innovation, Design-Thinking and Entrepreneurship (Universitatea Babes-Bolyai) - Processus d'idéation, prototypage et test.</li></ul>",
+                tag_mobility: "Design-Thinking",
+                tag_innovation: "Prototypage",
+                tag_design_thinking: "Innovation",
+                
+                section_vision_title: "MA VISION DE LA CHEFFERIE DE PROJET",
+                section_vision_subtitle: "Mes convictions pour faire réussir vos initiatives IT & Business",
+                vision_1_title: "Maîtrise du cycle de vie",
+                vision_1_desc: "De la conception (rédaction du cahier des charges) à la mise en production, j'assure le pilotage complet du projet. Je définis les jalons, sécurise les phases de développement et encadre la recette pour garantir un livrable conforme aux attentes.",
+                vision_2_title: "Le trait d'union Métier / IT",
+                vision_2_desc: "Un Chef de Projet doit être capable de parler aux développeurs comme aux équipes métiers. Mon rôle est de traduire les besoins opérationnels en solutions concrètes (spécifications) et d'assurer une coordination fluide entre les experts internes et externes.",
+                vision_3_title: "Agilité & Intrapreneuriat",
+                vision_3_desc: "Habitué à l'esprit start-up, j'encourage l'expérimentation, les méthodes agiles (test & learn, itérations) et la curiosité. J'aime sortir des sentiers battus pour proposer des améliorations continues et innover dans les approches.",
+                vision_4_title: "Pilotage par la valeur (ROI)",
+                vision_4_desc: "Chaque projet doit avoir un impact mesurable. Je m'appuie sur le suivi de la qualité, des coûts et des délais (QCD) ainsi que sur la data pour animer les comités de pilotage (COPIL), arbitrer les priorités et garantir la création de valeur.",
+                
+                section_atouts_title: "MES ATOUTS & DÉFIS",
+                section_atouts_subtitle: "Transparence totale sur ma façon de collaborer",
+                lbl_forces: "FORCES (ASSETS)",
+                lbl_weaknesses: "POINTS D'ATTENTION (REALITY CHECK)",
+                
+                force_1: "<strong>Esprit Intrapreneur</strong> — Capable de tester, itérer, et de faire bouger les lignes avec autonomie.",
+                force_2: "<strong>Traducteur Métier/IT</strong> — Facilité à lier les enjeux opérationnels globaux aux réalités techniques.",
+                force_3: "<strong>Communication & Synthèse</strong> — Animation de comités et rédaction de documentations claires.",
+                force_4: "<strong>Travail en Équipe</strong> — Créer un environnement collaboratif et bienveillant pour fédérer les acteurs.",
+                force_5: "<strong>Méthodique & Rigoureux</strong> — Gestion précise des plannings, budgets et comparatifs technico-économiques.",
+                force_6: "<strong>Curiosité Tech/Digitale</strong> — Appétence forte pour l'omnicanalité, l'IT et les nouveaux outils.",
+                
+                weak_1: "<strong>Biais d'action</strong> — Mon côté \"maker\" me pousse à avancer vite ; j'apprends à temporiser face aux process internes.",
+                weak_2: "<strong>Limites de l'expertise technique pure</strong> — Je comprends l'architecture IT, mais je ne suis pas développeur. Je m'appuie sur les experts.",
+                weak_3: "<strong>Besoin de sens</strong> — J'ai besoin de comprendre l'impact (économique, social, environnemental) pour m'investir pleinement.",
+                weak_4: "<strong>L'art de la délégation</strong> — Ayant souvent porté des projets de A à Z, j'aiguise ma posture de \"faire faire\".",
+                weak_5: "<strong>Onboarding Processus</strong> — Curieux, je m'adapte vite à Jira ou Notion, mais je devrai assimiler vos frameworks spécifiques.",
+                weak_6: "<strong>Gestion du flou initial</strong> — Je ressens le besoin de structurer rapidement les avant-projets pour sécuriser l'avancement.",
+                
+                section_skills_title: "COMPÉTENCES",
+                section_skills_subtitle: "Mes outils et expertises projet",
+                skill_cat_mgmt: "<i data-lucide='briefcase' width='24' style='color: var(--orange);'></i> Méthodologie & Pilotage",
+                skill_cat_data: "<i data-lucide='monitor-smartphone' width='24' style='color: var(--purple);'></i> Environnement IT & Digital",
+                skill_cat_tools: "<i data-lucide='sparkles' width='24' style='color: var(--teal);'></i> Outils & IA",
+                skill_cat_tech: "<i data-lucide='code' width='24' style='color: var(--pink);'></i> Bases Techniques",
+                skill_cat_lang: "<i data-lucide='globe' width='24' style='color: var(--teal);'></i> Langues",
+                skill_agile: "Gestion Agile (Scrum) & Cycle en V",
+                skill_kpi: "Suivi Qualité, Coûts, Délais (QCD)",
+                skill_risk: "Gestion des risques & Jalons",
+                skill_team: "Coordination Multi-acteurs",
+                skill_scrum: "Cadrage, Recette, Mise en prod.",
+                skill_excel: "Excel Avancé (TCD, Macros) & Power BI",
+                skill_api: "Compréhension Architecture IT & API",
+                skill_dash: "Omnicanalité & Retail",
+                skill_data: "Veille Technologique",
+                skill_control: "UX / UI (Sensibilité)",
+                skill_workflows: "Jira / Notion / Linear",
+                skill_ticketing: "Outils de ticketing & Suivi de bugs",
+                skill_digital: "Prompting IA avancé (Gains de prod.)",
+                skill_ppt: "Outils de présentation (PPT, Canva, Gamma, NotebookLM)",
+                skill_css: "HTML/CSS (Fondamentaux)",
+                skill_liquid: "Liquid (Architecture E-commerce Shopify)",
+                skill_r: "VBA (Bases)",
+                skill_com: "Capacité d'analyse et de synthèse",
+                skill_prob: "Excellente communication orale/écrite",
+                skill_result: "Force de proposition",
+                skill_listen: "Esprit d'équipe & Bienveillance",
+                skill_disc: "Autonomie & Curiosité",
+                lang_fr: "🇫🇷 Français (Natif)",
+                lang_en: "🇬🇧 Anglais (B2)",
+                lang_es: "🇪🇸 Espagnol (A2)",
+                
+                section_edu_title: "FORMATION ACADÉMIQUE",
+                section_edu_subtitle: "Mon socle théorique en Management de Projets & IT",
+                search_placeholder: "Rechercher un cours (ex: Finance, SI, Data, Agile...)",
+                
+                ambition_title: "MON ENGAGEMENT / MON PROFIL",
+                ambition_subtitle: "L'avantage d'un Chef de Projet hybride",
+                ambition_text: "Mon parcours allie la <strong>rigueur méthodologique d'une grande entreprise</strong> (GRDF) et l'<strong>agilité d'un créateur</strong> (Desrèves). Je cherche à intégrer vos équipes pour piloter des projets IT, Digitaux ou d'Innovation, en coordonnant les acteurs (DSI, métiers, prestataires) et en garantissant que la solution technique réponde parfaitement au besoin métier, dans le respect des coûts et des délais.",
+                
+                section_faq_title: "QUESTIONS FRÉQUENTES",
+                section_faq_subtitle: "Anticipons les détails logistiques",
+                faq_q1: "Quand êtes-vous disponible ?",
+                faq_a1: "Je serai diplômé de mon Master 2 (Université / IAE) et en fin de contrat d'alternance fin juin. Je suis donc <strong>disponible dès début Juillet 2026</strong>.",
+                faq_q2: "Quelle est votre zone de mobilité ?",
+                faq_a2: "Je cible prioritairement <strong>Lille, sa métropole</strong>, et la région des Hauts-de-France (Valenciennes). Je reste ouvert à <strong>Paris</strong> ou à un poste en <strong>full télétravail</strong> n'importe où en France.",
+                faq_q3: "Quel type de contrat recherchez-vous ?",
+                faq_a3: "Je recherche un <strong>CDI en tant que Chef de Projet (IT / Digital / Innovation)</strong> pour m'investir sur le long terme et piloter vos chantiers stratégiques ou applicatifs.",
+                faq_q4: "Télétravail : Full ou Hybride ?",
+                faq_a4: "Les deux. Appréciant le travail en équipe et l'agilité, l'hybride est un excellent compromis. J'ai par ailleurs un <strong>setup professionnel</strong> garantissant une productivité et une animation de réunion parfaites à distance.",
+                faq_q5: "Quelles sont vos prétentions salariales ?",
+                faq_a5: "Je suis ouvert à la discussion selon le niveau de responsabilités, le secteur (Banque/Assurance, Retail, Industrie) et le package (RTT, Mutuelle, intéressement). Mes attentes correspondent au marché pour un Bac+5 avec 3 années d'expérience projet.",
+
+                final_title: "Le mot de la fin",
+                final_text: "La réussite d'un projet IT ne repose pas uniquement sur le code, mais sur la capacité à fédérer des acteurs divers (métiers, développeurs, intégrateurs), à bien comprendre les spécifications, et à ne jamais perdre de vue le besoin utilisateur final. Si mon approche résonne avec la culture de votre entreprise, discutons-en de vive voix. À bientôt !",
+
+                footer_title: "Livrons vos projets ensemble",
+                footer_copyright: "© 2026 Florian Bouchart • Portfolio Chef de Projet"
+            },
+            en: {
+                sober_mode: "Light",
+                availability_badge: "🟢 AVAILABLE JULY 2026",
+                hero_badge: "IT & DIGITAL PROJECT MANAGER – Omnichannel & Innovation",
+                hero_description: "Welcome to my digital resume! I am Florian, a Project Management Master 2 graduate with 3 years of operational experience. Through this portfolio, you will discover how I combine the <span class=\"highlight\">rigorous project management of a major company (GRDF)</span>, an <span class=\"highlight\">intrapreneurial spirit (Desrèves)</span>, and a strong appetite for <span class=\"highlight\">Tech & Digital environments</span> to steer your projects from design to deployment.",
+                btn_cv: "View Resume",
+                cv_link: "https://image2url.com/r2/default/documents/1771518176562-1cde6d94-055d-4ce0-8fb0-4f2b7de820a0.pdf",
+                nav_home: "Home",
+                nav_career: "Career",
+                nav_skills: "Strengths",
+                nav_edu: "Education",
+                nav_ambition: "Profile",
+                nav_contact: "Contact",
+                section_pro_title: "CAREER & SKILLS",
+                section_pro_subtitle: "What I've done and what it brings to your projects",
+                
+                exp_grdf_title: "Project & Portfolio Manager (Apprenticeship)",
+                exp_grdf_period: "2023 - 2026 • 3 years",
+                exp_grdf_desc: "<ul style='list-style-type: disc; margin-left: 1.5rem; display: flex; flex-direction: column; gap: 0.8rem;'><li><strong>Requirements Analysis & Reporting:</strong> Automated (VBA, Excel) the generation of concession reporting documents (CRAC) for <strong>650+ contracts</strong>, translating internal needs into effective solutions.</li><li><strong>Quality, Cost, Delivery (QCD) Tracking:</strong> Profitability studies and budget tracking for an investment portfolio up to <strong>800,000€</strong>.</li><li><strong>Coordination & Data:</strong> Produced and structured KPIs and summary sheets for stakeholders (municipalities), contractually justifying the investments made.</li></ul>",
+                tag_kpi: "Requirements Analysis",
+                tag_contracts: "Budget Tracking",
+                tag_relations: "Data & Reporting",
+                tag_reporting: "Coordination",
+                
+                exp_desreves_title: "Founder & Entrepreneurial Project Manager",
+                exp_desreves_period: "2024 - Present",
+                exp_desreves_comp: "Desrèves - Clothing Brand",
+                exp_desreves_desc: "<ul style='list-style-type: disc; margin-left: 1.5rem; display: flex; flex-direction: column; gap: 0.8rem;'><li><strong>Intrapreneurship & Omnichannel:</strong> Launched an MVP and an e-commerce ecosystem with a <em>Test & Learn</em> approach, from design to production.</li><li><strong>Multi-stakeholder Management:</strong> Complete ecosystem coordination (suppliers, IT, designers, external service providers, photographers).</li><li><strong>Traffic & Acquisition:</strong> Data-driven steering (peaks at <strong>100k visits/month</strong>), UX/UI optimization, and continuous ROI focus.</li></ul>",
+                tag_entrepreneurship: "Digital Deployment",
+                tag_product_design: "Test & Learn Approach",
+                tag_web_dev: "E-commerce",
+                tag_suppliers: "Supplier Coordination",
+                
+                exp_bde_title: "Associative Project Director (President)",
+                exp_bde_period: "2022 - 2025 • 3 years",
+                exp_bde_desc: "<ul style='list-style-type: disc; margin-left: 1.5rem; display: flex; flex-direction: column; gap: 0.8rem;'><li><strong>Cross-functional Management:</strong> Directed a multidisciplinary team of <strong>30+ volunteers</strong>, organizing schedules and event milestones.</li><li><strong>Budget Control:</strong> Strict management of a <strong>17,000€</strong> global budget (generating <strong>22,000€ in revenue</strong>, while offering reduced student rates).</li><li><strong>Innovation & Partnerships:</strong> Managed an innovative co-created textile project in collaboration with the brand Amoses (+80k IG followers).</li></ul>",
+                tag_leadership: "Team Management",
+                tag_budget: "Schedule Management",
+                tag_events: "Risk Management",
+                tag_team_mgmt: "Partnerships",
+                
+                exp_esport_title: "Project Coordinator (E-sport)",
+                exp_esport_period: "2018 - 2021 • Created at age 15",
+                exp_esport_comp: "Associative Structure",
+                exp_esport_desc: "<ul style='list-style-type: disc; margin-left: 1.5rem; display: flex; flex-direction: column; gap: 0.8rem;'><li><strong>Tech Environment:</strong> Remote management of a roster with <strong>15 competitive players</strong> via digital tools (Discord, tournament platforms).</li><li><strong>Event Management:</strong> Planned LAN travel (Lyon e-Sport) and synchronized competition schedules.</li><li><strong>Budget & Strategy:</strong> Organized online tournaments with cash prizes (up to <strong>1000€</strong>) and audience acquisition strategy.</li></ul>",
+                tag_early_entrepreneurship: "Remote Management",
+                tag_management: "Digital Environment",
+                tag_event_org: "Logistics",
+                
+                exp_intl_title: "Intensive Abroad Training Programs",
+                exp_intl_period: "July - August 2024",
+                exp_intl_comp: "Erasmus+ (Finland & Romania)",
+                exp_intl_desc: "<ul style='list-style-type: disc; margin-left: 1.5rem; display: flex; flex-direction: column; gap: 0.8rem;'><li><strong>🇫🇮 Vaasa, Finland:</strong> Entrepreneurship and Venturing (Vaasan yliopisto) - Focus on intrapreneurship and solution development.</li><li><strong>🇷🇴 Cluj-Napoca, Romania:</strong> Innovation, Design-Thinking and Entrepreneurship (Universitatea Babes-Bolyai) - Ideation process, prototyping, and testing.</li></ul>",
+                tag_mobility: "Design-Thinking",
+                tag_innovation: "Prototyping",
+                tag_design_thinking: "Innovation",
+                
+                section_vision_title: "MY PROJECT MANAGEMENT VISION",
+                section_vision_subtitle: "My convictions for ensuring your IT & Business initiatives succeed",
+                vision_1_title: "Lifecycle Mastery",
+                vision_1_desc: "From design (writing specifications) to production, I ensure full project steering. I define milestones, secure development phases, and oversee testing to guarantee a deliverable that meets expectations.",
+                vision_2_title: "The Business / IT Bridge",
+                vision_2_desc: "A Project Manager must be able to speak to developers as well as business teams. My role is to translate operational needs into concrete solutions (specs) and ensure fluid coordination between internal and external experts.",
+                vision_3_title: "Agility & Intrapreneurship",
+                vision_3_desc: "Accustomed to the start-up spirit, I encourage experimentation, agile methods (test & learn, iterations), and curiosity. I like to think outside the box to propose continuous improvements and innovate in approaches.",
+                vision_4_title: "Value-driven Steering (ROI)",
+                vision_4_desc: "Every project must have a measurable impact. I rely on monitoring Quality, Cost, and Delivery (QCD) as well as data to lead steering committees (COPIL), arbitrate priorities, and ensure value creation.",
+                
+                section_atouts_title: "MY STRENGTHS & CHALLENGES",
+                section_atouts_subtitle: "Full transparency on how I collaborate",
+                lbl_forces: "STRENGTHS (ASSETS)",
+                lbl_weaknesses: "AREAS OF ATTENTION (REALITY CHECK)",
+                
+                force_1: "<strong>Intrapreneurial Spirit</strong> — Able to test, iterate, and move the needle autonomously.",
+                force_2: "<strong>Business/IT Translator</strong> — Ease in linking global operational stakes to technical realities.",
+                force_3: "<strong>Communication & Synthesis</strong> — Leading committees and writing clear documentation.",
+                force_4: "<strong>Teamwork</strong> — Creating a collaborative and benevolent environment to unite stakeholders.",
+                force_5: "<strong>Methodical & Rigorous</strong> — Precise management of schedules, budgets, and technical-economic comparisons.",
+                force_6: "<strong>Tech/Digital Curiosity</strong> — Strong appetite for omnichannel, IT, and new tools.",
+                
+                weak_1: "<strong>Action Bias</strong> — My 'maker' side pushes me to move fast; I am learning to balance this with internal processes.",
+                weak_2: "<strong>Limits of pure technical expertise</strong> — I understand IT architecture, but I am not a developer. I rely on experts.",
+                weak_3: "<strong>Need for Meaning</strong> — I need to understand the impact (economic, social, environmental) to fully commit.",
+                weak_4: "<strong>The Art of Delegation</strong> — Having often carried projects from A to Z, I am sharpening my 'make it happen through others' posture.",
+                weak_5: "<strong>Process Onboarding</strong> — Curious, I adapt quickly to Jira or Notion, but I will need to assimilate your specific frameworks.",
+                weak_6: "<strong>Managing Initial Ambiguity</strong> — I feel the need to quickly structure pre-projects to secure progress.",
+                
+                section_skills_title: "SKILLS",
+                section_skills_subtitle: "My tools and project expertise",
+                skill_cat_mgmt: "<i data-lucide='briefcase' width='24' style='color: var(--orange);'></i> Methodology & Steering",
+                skill_cat_data: "<i data-lucide='monitor-smartphone' width='24' style='color: var(--purple);'></i> IT & Digital Environment",
+                skill_cat_tools: "<i data-lucide='sparkles' width='24' style='color: var(--teal);'></i> Tools & AI",
+                skill_cat_tech: "<i data-lucide='code' width='24' style='color: var(--pink);'></i> Technical Basics",
+                skill_cat_lang: "<i data-lucide='globe' width='24' style='color: var(--teal);'></i> Languages",
+                skill_agile: "Agile Mgmt (Scrum) & V-Model",
+                skill_kpi: "Quality, Cost, Delivery (QCD) Tracking",
+                skill_risk: "Risk & Milestone Management",
+                skill_team: "Multi-stakeholder Coordination",
+                skill_scrum: "Scoping, Testing, Go-Live",
+                skill_excel: "Advanced Excel (Pivot, Macros) & Power BI",
+                skill_api: "Understanding of IT Architecture & APIs",
+                skill_dash: "Omnichannel & Retail",
+                skill_data: "Technology Watch",
+                skill_control: "UX / UI (Sensibility)",
+                skill_workflows: "Jira / Notion / Linear",
+                skill_ticketing: "Ticketing & Bug Tracking Tools",
+                skill_digital: "Advanced AI Prompting (Productivity)",
+                skill_ppt: "Presentation Tools (PPT, Canva, Gamma, NotebookLM)",
+                skill_css: "HTML/CSS (Fundamentals)",
+                skill_liquid: "Liquid (Shopify E-commerce Architecture)",
+                skill_r: "VBA (Basics)",
+                skill_com: "Analysis and Synthesis Capacity",
+                skill_prob: "Excellent Oral/Written Communication",
+                skill_result: "Proactive Proposal Maker",
+                skill_listen: "Team Spirit & Benevolence",
+                skill_disc: "Autonomy & Curiosity",
+                lang_fr: "🇫🇷 French (Native)",
+                lang_en: "🇬🇧 English (B2)",
+                lang_es: "🇪🇸 Spanish (A2)",
+                
+                section_edu_title: "ACADEMIC BACKGROUND",
+                section_edu_subtitle: "My theoretical foundation in Project Mgmt & IT",
+                search_placeholder: "Search for a course (e.g., Finance, IT Systems, Agile...)",
+                
+                ambition_title: "MY COMMITMENT / MY PROFILE",
+                ambition_subtitle: "The advantage of a hybrid Project Manager",
+                ambition_text: "My background combines the <strong>methodological rigor of a large enterprise</strong> (GRDF) and the <strong>agility of a creator</strong> (Desrèves). I am looking to join your teams to steer IT, Digital, or Innovation projects, coordinating stakeholders (IT Dept, business, providers) and ensuring the technical solution perfectly meets the business need, respecting costs and deadlines.",
+                
+                section_faq_title: "FAQ",
+                section_faq_subtitle: "Anticipating logistical details",
+                faq_q1: "When are you available?",
+                faq_a1: "I will graduate from my Master 2 (University / IAE) and finish my apprenticeship contract in late June. I am therefore <strong>available from early July 2026</strong>.",
+                faq_q2: "What is your geographic mobility?",
+                faq_a2: "I primarily target <strong>Lille, its metropolitan area</strong>, and the Hauts-de-France region (Valenciennes). I remain open to <strong>Paris</strong> or a <strong>fully remote</strong> position anywhere in France.",
+                faq_q3: "What type of contract are you looking for?",
+                faq_a3: "I am looking for a <strong>Permanent Contract (CDI) as an IT / Digital / Innovation Project Manager</strong> to invest myself long-term and steer your strategic or applicative projects.",
+                faq_q4: "Remote Work: Full or Hybrid?",
+                faq_a4: "Both. Valuing teamwork and agility, hybrid is an excellent compromise. Furthermore, I have a <strong>professional setup</strong> guaranteeing perfect productivity and meeting facilitation remotely.",
+                faq_q5: "What are your salary expectations?",
+                faq_a5: "I am open to discussion based on the level of responsibilities, the sector (Banking/Insurance, Retail, Industry), and the package. My expectations match the market for a Master 2 with 3 years of project experience.",
+
+                final_title: "Final Word",
+                final_text: "The success of an IT project does not rely solely on code, but on the ability to unite diverse stakeholders (business, developers, integrators), to properly understand the specifications, and to never lose sight of the final user need. If my approach resonates with your company's culture, let's talk in person. Talk to you soon!",
+
+                footer_title: "Let's deliver your projects together",
+                footer_copyright: "© 2026 Florian Bouchart • Project Manager Portfolio"
+            }
+        };
+
+        // DETAILS POUR POPUP (Atouts Chef de Projet)
+        const detailsData = {
+            fr: {
+                force_1: "Grâce à mes expériences entrepreneuriales (création d'entreprise, partenariats, développement web), j'ai développé une forte proactivité. Je suis capable de chercher les informations par moi-même et d'adopter une démarche 'test & learn'.",
+                force_2: "Je comprends les contraintes techniques, les enjeux business et les besoins utilisateurs. Je traduis les besoins métiers en spécifications claires pour les développeurs, et j'explique les contraintes IT aux équipes métiers.",
+                force_3: "Je sais synthétiser des informations complexes (CR de réunions, présentations, cahier des charges) pour permettre aux décideurs de trancher rapidement et animer efficacement les comités de pilotage.",
+                force_4: "J'ai dirigé des bénévoles (BDE) et des joueurs (E-sport). On ne les manage pas par l'ordre, mais par l'adhésion à une vision commune, la bienveillance et l'écoute active.",
+                force_5: "Je sais structurer un projet : définir des jalons, suivre un budget, réaliser des comparatifs technico-économiques de prestataires et maintenir une documentation projet irréprochable.",
+                force_6: "Je m'accapare très rapidement les outils informatiques. J'ai un intérêt marqué pour les solutions PIM/MDM, l'omnicanalité, le web et l'amélioration continue des processus via l'IA ou l'automatisation.",
+                
+                weak_1: "L'intrapreneur en moi veut parfois corriger le problème tout de suite. Je travaille à ralentir pour passer plus de temps à analyser le besoin et respecter les process de validation (tests, recette).",
+                weak_2: "Bien que je comprenne la logique de programmation, les API ou l'architecture réseau, mon rôle n'est pas de coder. Je dois faire confiance aux experts techniques pour les choix d'implémentation.",
+                weak_3: "Je ne peux pas m'investir à 100% dans une tâche 'parce qu'on me l'a demandé'. J'ai besoin de comprendre la stratégie globale (impact environnemental, ROI, expérience client) pour être efficace.",
+                weak_4: "Ayant souvent porté mes projets seul (solopreneur), je dois me discipliner pour déléguer efficacement et faire confiance aux développeurs ou prestataires externes.",
+                weak_5: "Je maîtrise bien Jira, Slack, Notion et Linear. Cependant, chaque entreprise a sa propre configuration agile ou cycle en V, il me faudra un temps d'adaptation pour m'aligner parfaitement sur vos rituels.",
+                weak_6: "Au lancement d'un projet, beaucoup d'éléments sont instables (budget, périmètre). J'aime border rapidement les choses avec des pré-études et des cahiers des charges pour réduire cette incertitude."
+            },
+            en: {
+                force_1: "Through my entrepreneurial experiences (business creation, partnerships, web dev), I've developed strong proactivity. I can find information on my own and adopt a 'test & learn' approach.",
+                force_2: "I understand technical constraints, business stakes, and user needs. I translate business needs into clear specs for developers, and I explain IT constraints to business teams.",
+                force_3: "I know how to synthesize complex information (minutes, presentations, specifications) to allow decision-makers to decide quickly and to animate steering committees effectively.",
+                force_4: "I led volunteers (Student Union) and players (E-sport). You don't manage them by order, but by adherence to a common vision, benevolence, and active listening.",
+                force_5: "I know how to structure a project: define milestones, track a budget, conduct technical-economic comparisons of providers, and maintain flawless project documentation.",
+                force_6: "I master IT tools very quickly. I have a strong interest in PIM/MDM solutions, omnichannel, web, and continuous process improvement via AI or automation.",
+                
+                weak_1: "The intrapreneur in me sometimes wants to fix the problem right away. I work on slowing down to analyze the need properly and respect validation processes (testing, QA).",
+                weak_2: "Although I understand programming logic, APIs, or network architecture, my role is not to code. I must trust technical experts for implementation choices.",
+                weak_3: "I can't invest 100% in a task just 'because I was told to'. I need to understand the global strategy (environmental impact, ROI, customer experience) to be effective.",
+                weak_4: "Having often carried projects alone (solopreneur), I must discipline myself to delegate effectively and trust developers or external providers.",
+                weak_5: "I master Jira, Slack, Notion, and Linear well. However, each company has its own agile or V-model configuration; I will need adaptation time to perfectly align with your rituals.",
+                weak_6: "At project kick-off, many elements are unstable (budget, scope). I like to quickly frame things with pre-studies and specifications to reduce this uncertainty."
+            }
+        };
+
+        // DONNÉES ACADÉMIQUES
+        const academicData = {
+            fr: [
+                {
+                    id: 'l3', title: 'Licence 3 - Management et Développement des Organisations', year: '2023-2024',
+                    logo: 'https://image2url.com/r2/default/images/1770848619109-37217b07-5291-48bd-b0cc-545728fc7623.png', gradient: 'linear-gradient(135deg, #00d4aa, #6a4c93)',
+                    categories: [
+                        { name: 'Gestion & Business', icon: 'briefcase', color: '#ff6b35', courses: ['RH et Management d\'équipe', 'Marketing BtoB (Négociation)', 'Marketing International', 'Financement et Investissement', 'Contrôle de gestion', 'Management Stratégique'] },
+                        { name: 'Stratégie Digitale', icon: 'trending-up', color: '#6a4c93', courses: ['RGPD / Marketing Digital', 'Digitalisation des entreprises', 'Communication Réseaux Sociaux'] },
+                        { name: 'Juridique', icon: 'award', color: '#00d4aa', courses: ['Droit du travail', 'Droit de la distribution/consommation'] },
+                        { name: 'Outils & Tech', icon: 'code', color: '#ff006e', courses: ['Outils de création graphique', 'Système d\'information pour la gestion', 'Tableaux de bord', 'Introduction à la programmation'] },
+                        { name: 'Innovation & International', icon: 'globe', color: '#ffbe0b', courses: ['Innovation et Design Thinking', 'Module Polytechnique (Eunice)', 'Management English', 'Gestion de projet et qualité', 'Simulation de gestion'] }
+                    ]
+                },
+                {
+                    id: 'm1', title: 'Master 1 - Entrepreneuriat et Management de Projets', year: '2024-2025', subtitle: 'L\'expertise',
+                    logo: 'https://image2url.com/r2/default/images/1770848619109-37217b07-5291-48bd-b0cc-545728fc7623.png', gradient: 'linear-gradient(135deg, #6a4c93, #ff006e)',
+                    categories: [
+                        { name: 'Management des Organisations', icon: 'users', color: '#6a4c93', courses: ['Comportements organisationnels', 'Conduite de réunion', 'Négociation avec les syndicats', 'Recrutement 5.0', 'Gestion de conflits', 'Conduire des entretiens'] },
+                        { name: 'Gestion de Projet Agile', icon: 'target', color: '#ff006e', courses: ['Ingénierie de projet', 'Design entrepreneurial', 'Approche Phygitale', 'CRM', 'Business Model et start-up'] },
+                        { name: 'Finance & Performance', icon: 'bar-chart-3', color: '#00d4aa', courses: ['Management de la performance financière', 'Gestion des risques (Risk agil)', 'Outils financiers', 'Fiscalité d\'entreprise'] },
+                        { name: 'Environnement Légal', icon: 'award', color: '#ffbe0b', courses: ['Droit des affaires', 'Droit du numérique/RGPD', 'Appliquer la réglementation'] },
+                        { name: 'Outils Numériques', icon: 'code', color: '#ff6b35', courses: ['Maîtrise Suite Adobe & Power BI', 'Optimisation système d\'information', 'Veille numérique', 'Conception études et recherches'] },
+                        { name: 'RSE & International', icon: 'globe', color: '#00d4aa', courses: ['Diagnostic éthique et écologique', 'Management durable', 'Business English (+TOEIC)', 'Semaine internationale', 'Développer capacités de transfert'] }
+                    ]
+                },
+                {
+                    id: 'm2', title: 'Master 2 - Entrepreneuriat et Management de Projets', year: '2025-2026', subtitle: 'La confirmation',
+                    logo: 'https://image2url.com/r2/default/images/1770848619109-37217b07-5291-48bd-b0cc-545728fc7623.png', gradient: 'linear-gradient(135deg, #ff006e, #ff6b35)',
+                    categories: [
+                        { name: 'Stratégie Avancée', icon: 'trending-up', color: '#ff6b35', courses: ['Intelligence collective', 'Négociation salariale', 'Indices de santé entreprise', 'Conduire projets de changement', 'Valoriser le potentiel d\'équipe', 'Intégrer personnalités difficiles'] },
+                        { name: 'Pilotage de Projet', icon: 'target', color: '#ff006e', courses: ['MS Project', 'Manager la dimension digitale', 'Amélioration continue', 'Scrum Master (Préparation)', 'Manager qualité'] },
+                        { name: 'Data & Innovation', icon: 'sparkles', color: '#6a4c93', courses: ['Power BI (Traitement avancé)', 'Analyse de données', 'Design Thinking', 'Slow Management', 'Protection de l\'innovation', 'Implémenter innovations managériales'] },
+                        { name: 'Entrepreneuriat & Finance', icon: 'briefcase', color: '#00d4aa', courses: ['Business Model financier', 'Réseaux d\'accompagnement', 'Financer son projet', 'Découverte parcours créateurs', 'Mémoire de recherche'] },
+                        { name: 'Marketing Digital', icon: 'trending-up', color: '#ffbe0b', courses: ['Marketing BtoB', 'Web marketing', 'Marketing digital avancé'] }
+                    ]
+                },
+                {
+                    id: 'uphf', title: 'Université Polytechnique des Hauts-de-France', subtitle: 'Modules Polytechniques & Projets Transverses', year: '2023-2026',
+                    logo: 'https://image2url.com/r2/default/images/1770845782054-6aff1901-b7cb-4072-8640-c111adbd508c.png', gradient: 'linear-gradient(135deg, #00d4aa, #ffbe0b)',
+                    categories: [
+                        { name: 'Innovation & Management (MPTHON)', icon: 'cpu', color: '#ff6b35', courses: ['Collaboration Manager-Ingénieur (avec INSA)', 'Coaching d\'équipe : Gestion de projet & Design Thinking', 'Création d\'intelligence collective et innovation agile'] },
+                        { name: 'Développement Durable & Industrie', icon: 'sprout', color: '#00d4aa', courses: ['Analyse systémique : Produire durablement (RSE, ODD)', 'Économie circulaire & de la fonctionnalité', 'Diagnostic complet de durabilité d\'un site industriel'] },
+                        { name: 'International & Analyse Média', icon: 'eye', color: '#6a4c93', courses: ['<div style="display:flex; align-items:center; gap:10px;">Partenariat Université Laval (Québec) <img src="https://image2url.com/r2/default/images/1770845708512-fe418a7a-02d0-4180-b674-2246efe895c1.png" style="height:20px; background:white; padding:2px; border-radius:4px;"></div>', 'Sémiotique : Décryptage des stratégies visuelles & marketing', 'Analyse critique des médias et réseaux sociaux'] },
+                        { name: 'Communication Professionnelle', icon: 'mic', color: '#ff006e', courses: ['Prise de parole à fort enjeu & Pitch efficace', 'Gestion du stress et maîtrise de l\'auditoire', 'Synthèse et structuration du discours'] },
+                        { name: 'Performance Linguistique (TOEIC)', icon: 'languages', color: '#ffbe0b', courses: ['Score Test Blanc : 925/990 (Niveau B2) <a href="https://image2url.com/r2/default/images/1770846207735-7e032cf9-27e0-47ca-8124-f5778d31ce2e.png" target="_blank" style="text-decoration:underline; color:var(--orange); font-weight:bold; margin-left:5px;">Cliquer pour voir</a>', 'Certification officielle : Mars 2026 (Objectif 950+)', 'Anglais Business & Professionnel'] }
+                    ]
+                },
+                {
+                    id: 'worms', title: 'International Week - IAE Valenciennes & Hochschule Worms', subtitle: 'Designing Innovative Solutions for Trust & Well-being', year: '2026',
+                    logo: 'https://image2url.com/r2/default/images/1770887078016-308a9f49-8523-491a-b256-ff4dde992a04.png', gradient: 'linear-gradient(135deg, #ff006e, #00d4aa)',
+                    categories: [
+                        { name: 'Processus Design Thinking', icon: 'lightbulb', color: '#ff006e', courses: ['<strong>Intervenante :</strong> Prof. Dr. Carina Leue-Bensch (Hochschule Worms)', '<strong>Understand & Observe :</strong> Needfinding conversations, Feedback Capture Grid', '<strong>Point of View :</strong> Création de Personas, Empathy Mapping', '<strong>Ideation :</strong> Brainstorming (Headstand method, Slice and Dice), Heatmap voting', '<strong>Prototype & Test :</strong> Rapid prototyping (mockups, paper apps), tests itératifs', '<strong>Storytelling & Pitch :</strong> Construction d\'un arc narratif (Freytag Pyramid) et Pitch de 7 minutes devant jury'] }
+                    ]
+                }
+            ],
+            en: [
+                {
+                    id: 'l3', title: 'Bachelor 3 - Management and Organizational Development', year: '2023-2024',
+                    logo: 'https://image2url.com/r2/default/images/1770848619109-37217b07-5291-48bd-b0cc-545728fc7623.png', gradient: 'linear-gradient(135deg, #00d4aa, #6a4c93)',
+                    categories: [
+                        { name: 'Business & Management', icon: 'briefcase', color: '#ff6b35', courses: ['HR & Team Management', 'B2B Marketing (Negotiation)', 'International Marketing', 'Financing & Investment', 'Management Control', 'Strategic Management'] },
+                        { name: 'Digital Strategy', icon: 'trending-up', color: '#6a4c93', courses: ['GDPR / Digital Marketing', 'Business Digitalization', 'Social Media Communication'] },
+                        { name: 'Legal', icon: 'award', color: '#00d4aa', courses: ['Labor Law', 'Distribution/Consumer Law'] },
+                        { name: 'Tools & Tech', icon: 'code', color: '#ff006e', courses: ['Graphic Creation Tools', 'Management Information Systems', 'Dashboards', 'Introduction to Programming'] },
+                        { name: 'Innovation & International', icon: 'globe', color: '#ffbe0b', courses: ['Innovation & Design Thinking', 'Polytechnic Module (Eunice)', 'Management English', 'Project Management & Quality', 'Business Simulation'] }
+                    ]
+                },
+                {
+                    id: 'm1', title: 'Master 1 - Entrepreneurship & Project Management', year: '2024-2025', subtitle: 'Expertise',
+                    logo: 'https://image2url.com/r2/default/images/1770848619109-37217b07-5291-48bd-b0cc-545728fc7623.png', gradient: 'linear-gradient(135deg, #6a4c93, #ff006e)',
+                    categories: [
+                        { name: 'Organizational Management', icon: 'users', color: '#6a4c93', courses: ['Organizational Behavior', 'Meeting Management', 'Union Negotiation', 'Recruitment 5.0', 'Conflict Management', 'Conducting Interviews'] },
+                        { name: 'Agile Project Mgmt', icon: 'target', color: '#ff006e', courses: ['Project Engineering', 'Entrepreneurial Design', 'Phygital Approach', 'CRM', 'Business Models & Startups'] },
+                        { name: 'Finance & Performance', icon: 'bar-chart-3', color: '#00d4aa', courses: ['Financial Performance Mgmt', 'Risk Management (Agile Risk)', 'Financial Tools', 'Corporate Taxation'] },
+                        { name: 'Legal Environment', icon: 'award', color: '#ffbe0b', courses: ['Business Law', 'Digital Law/GDPR', 'Regulatory Compliance'] },
+                        { name: 'Digital Tools', icon: 'code', color: '#ff6b35', courses: ['Adobe Suite Mastery & Power BI', 'Information System Optimization', 'Digital Watch', 'Research Design'] },
+                        { name: 'CSR & International', icon: 'globe', color: '#00d4aa', courses: ['Ethical & Ecological Diagnosis', 'Sustainable Management', 'Business English (+TOEIC)', 'International Week', 'Developing Transfer Capabilities'] }
+                    ]
+                },
+                {
+                    id: 'm2', title: 'Master 2 - Entrepreneurship & Project Management', year: '2025-2026', subtitle: 'Confirmation',
+                    logo: 'https://image2url.com/r2/default/images/1770848619109-37217b07-5291-48bd-b0cc-545728fc7623.png', gradient: 'linear-gradient(135deg, #ff006e, #ff6b35)',
+                    categories: [
+                        { name: 'Advanced Strategy', icon: 'trending-up', color: '#ff6b35', courses: ['Collective Intelligence', 'Salary Negotiation', 'Company Health Indices', 'Leading Change Projects', 'Valuing Team Potential', 'Managing Difficult Personalities'] },
+                        { name: 'Project Steering', icon: 'target', color: '#ff006e', courses: ['MS Project', 'Managing Digital Dimension', 'Continuous Improvement', 'Scrum Master (Prep)', 'Quality Management'] },
+                        { name: 'Data & Innovation', icon: 'sparkles', color: '#6a4c93', courses: ['Power BI (Advanced)', 'Data Analysis', 'Design Thinking', 'Slow Management', 'Innovation Protection', 'Implementing Managerial Innovations'] },
+                        { name: 'Entrepreneurship & Finance', icon: 'briefcase', color: '#00d4aa', courses: ['Financial Business Model', 'Support Networks', 'Project Financing', 'Creator Journey Discovery', 'Research Thesis'] },
+                        { name: 'Digital Marketing', icon: 'trending-up', color: '#ffbe0b', courses: ['B2B Marketing', 'Web Marketing', 'Advanced Digital Marketing'] }
+                    ]
+                },
+                {
+                    id: 'uphf', title: 'Université Polytechnique des Hauts-de-France', subtitle: 'Polytechnic Modules & Cross-functional Projects', year: '2023-2026',
+                    logo: 'https://image2url.com/r2/default/images/1770845782054-6aff1901-b7cb-4072-8640-c111adbd508c.png', gradient: 'linear-gradient(135deg, #00d4aa, #ffbe0b)',
+                    categories: [
+                        { name: 'Innovation & Management (MPTHON)', icon: 'cpu', color: '#ff6b35', courses: ['Manager-Engineer Collaboration (with INSA)', 'Team Coaching: Project Mgmt & Design Thinking', 'Creating Collective Intelligence & Agile Innovation'] },
+                        { name: 'Sustainable Development & Industry', icon: 'sprout', color: '#00d4aa', courses: ['Systemic Analysis: Sustainable Production (CSR, SDGs)', 'Circular Economy & Functionality Economy', 'Full Sustainability Diagnostic of an Industrial Site'] },
+                        { name: 'International & Media Analysis', icon: 'eye', color: '#6a4c93', courses: ['<div style="display:flex; align-items:center; gap:10px;">Partnership with Université Laval (Quebec) <img src="https://image2url.com/r2/default/images/1770845708512-fe418a7a-02d0-4180-b674-2246efe895c1.png" style="height:20px; background:white; padding:2px; border-radius:4px;"></div>', 'Semiotics: Decoding Visual & Marketing Strategies', 'Critical Analysis of Media and Social Networks'] },
+                        { name: 'Professional Communication', icon: 'mic', color: '#ff006e', courses: ['High-Stakes Public Speaking & Effective Pitching', 'Stress Management and Audience Mastery', 'Synthesis and Structuring of Discourse'] },
+                        { name: 'Linguistic Performance (TOEIC)', icon: 'languages', color: '#ffbe0b', courses: ['Practice Test Score: 925/990 (B2 Level) <a href="https://image2url.com/r2/default/images/1770846207735-7e032cf9-27e0-47ca-8124-f5778d31ce2e.png" target="_blank" style="text-decoration:underline; color:var(--orange); font-weight:bold; margin-left:5px;">View</a>', 'Official Certification: March 2026 (Target 950+)', 'Business & Professional English'] }
+                    ]
+                },
+                {
+                    id: 'worms', title: 'International Week - IAE Valenciennes & Hochschule Worms', subtitle: 'Designing Innovative Solutions for Trust & Well-being', year: '2026',
+                    logo: 'https://image2url.com/r2/default/images/1770887078016-308a9f49-8523-491a-b256-ff4dde992a04.png', gradient: 'linear-gradient(135deg, #ff006e, #00d4aa)',
+                    categories: [
+                        { name: 'Design Thinking Process', icon: 'lightbulb', color: '#ff006e', courses: ['<strong>Lecturer:</strong> Prof. Dr. Carina Leue-Bensch (Hochschule Worms)', '<strong>Understand & Observe:</strong> Needfinding conversations, Feedback Capture Grid', '<strong>Point of View:</strong> Creating Personas, Empathy Mapping', '<strong>Ideation:</strong> Brainstorming (Headstand method, Slice and Dice), Heatmap voting', '<strong>Prototype & Test:</strong> Rapid prototyping (mockups, paper apps), iterative testing', '<strong>Storytelling & Pitch:</strong> Building a narrative arc (Freytag Pyramid) and delivering a 7-minute pitch to a jury'] }
+                    ]
+                }
+            ]
+        };
+
+        // --- GESTION DU CURSEUR (GLOW) ---
+        const cursorGlow = document.getElementById('cursorGlow');
+        let mouseX = 0, mouseY = 0;
+        let glowX = 0, glowY = 0;
+        
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            cursorGlow.classList.add('active');
+        });
+
+        document.addEventListener('mouseleave', () => {
+            cursorGlow.classList.remove('active');
+        });
+
+        function animateGlow() {
+            glowX += (mouseX - glowX) * 0.15;
+            glowY += (mouseY - glowY) * 0.15;
+            cursorGlow.style.left = glowX + 'px';
+            cursorGlow.style.top = glowY + 'px';
+            requestAnimationFrame(animateGlow);
+        }
+        
+        animateGlow();
+
+        // --- LOGIQUE MODAL POPUP GÉNÉRIQUE ---
+        function openModal(title, subtitle, bodyHtml, color) {
+            const titleEl = document.getElementById('modalTitle');
+            titleEl.innerHTML = title;
+            titleEl.style.background = 'none';
+            titleEl.style.webkitTextFillColor = color;
+            titleEl.style.color = color;
+            
+            const bodyEl = document.getElementById('modalBody');
+            let finalHtml = '';
+            if (subtitle) {
+                finalHtml += `<div style="margin-bottom: 1.5rem; font-weight: 600; color: var(--text-primary); font-size: 1.1rem;">${subtitle}</div>`;
+            }
+            finalHtml += `<div style="color: var(--text-secondary); line-height: 1.7; font-size: 1.05rem;">${bodyHtml}</div>`;
+            bodyEl.innerHTML = finalHtml;
+            
+            document.getElementById('modalOverlay').classList.add('active');
+            lucide.createIcons();
+        }
+
+        function closeModal() {
+            document.getElementById('modalOverlay').classList.remove('active');
+        }
+
+        document.getElementById('modalOverlay').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('modalOverlay')) closeModal();
+        });
+
+        // Ouvrir Modale "Atouts"
+        function openTrait(key, colorStr) {
+            const t = translations[currentLang];
+            const d = detailsData[currentLang];
+            if(t[key] && d[key]) {
+                const parts = t[key].split('</strong> — ');
+                const title = parts[0].replace('<strong>', '');
+                const subtitle = parts.length > 1 ? parts[1] : '';
+                openModal(title, subtitle, d[key], colorStr);
+            }
+        }
+
+        // Ouvrir Modale "Expériences"
+        function openExpModal(cardElement, colorStr) {
+            const title = cardElement.querySelector('.exp-info h3').innerHTML;
+            const company = cardElement.querySelector('.exp-company').innerHTML;
+            const period = cardElement.querySelector('.exp-period').innerHTML;
+            const subtitle = `${company} &nbsp;|&nbsp; ${period}`;
+            
+            const desc = cardElement.querySelector('.exp-desc').innerHTML;
+            const tags = cardElement.querySelector('.exp-tags').innerHTML;
+            
+            const bodyHtml = `
+                <div style="margin-bottom: 2.5rem; font-size: 1.05rem; line-height: 1.7;">${desc}</div>
+                <div style="display: flex; flex-wrap: wrap; gap: 0.6rem;">${tags}</div>
+            `;
+            
+            openModal(title, subtitle, bodyHtml, colorStr);
+        }
+
+        // Ouvrir Modale "Formation (Timeline)"
+        function openTimelineModal(id, title, subtitle, colorStr) {
+             const semester = academicData[currentLang].find(s => s.id === id);
+             if(!semester) return;
+             
+             const searchTerm = document.getElementById('searchInput').value.trim();
+             const filtered = filterCourses(semester, searchTerm);
+             
+             const bodyHtml = `
+                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+                     ${filtered.categories.map(cat => `
+                         <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); padding: 1.5rem; border-radius: 1rem;">
+                             <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                                 <div style="background: linear-gradient(135deg, ${cat.color}, ${cat.color}dd); width: 40px; height: 40px; border-radius: 0.8rem; display: flex; justify-content: center; align-items: center; color: white;">
+                                     <i data-lucide="${cat.icon}" width="20"></i>
+                                 </div>
+                                 <h4 style="font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; color: var(--text-primary);">${cat.name}</h4>
+                             </div>
+                             <ul style="list-style: none; padding: 0;">
+                                 ${cat.courses.map(course => `
+                                     <li style="padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; gap: 0.5rem; align-items: flex-start; color: var(--text-secondary); font-size: 0.95rem;">
+                                         <i data-lucide="check" width="16" style="color: ${cat.color}; flex-shrink: 0; margin-top: 2px;"></i>
+                                         <span>${course}</span>
+                                     </li>
+                                 `).join('')}
+                             </ul>
+                         </div>
+                     `).join('')}
+                 </div>
+             `;
+             openModal(title, subtitle, bodyHtml, colorStr);
+        }
+
+        // --- LOGIQUE TIMELINE & RECHERCHE ---
+        function filterCourses(semester, searchTerm) {
+            if (!searchTerm) return semester;
+            const filteredCategories = semester.categories.map(category => ({
+                ...category,
+                courses: category.courses.filter(course => 
+                    course.toLowerCase().includes(searchTerm.toLowerCase())
+                )
+            })).filter(category => category.courses.length > 0);
+            return { ...semester, categories: filteredCategories };
+        }
+
+        function hasMatchingCourses(semester, searchTerm) {
+            if (!searchTerm) return true;
+            return semester.categories.some(category => 
+                category.courses.some(course => 
+                    course.toLowerCase().includes(searchTerm.toLowerCase())
+                )
+            );
+        }
+
+        function renderTimeline(searchTerm = '') {
+            const timeline = document.getElementById('timeline');
+            const currentData = academicData[currentLang];
+            const filteredData = currentData.filter(sem => hasMatchingCourses(sem, searchTerm));
+            
+            timeline.innerHTML = filteredData.map(semester => {
+                const filtered = filterCourses(semester, searchTerm);
+                const totalCourses = filtered.categories.reduce((acc, cat) => acc + cat.courses.length, 0);
+                const courseLabel = currentLang === 'fr' ? 'points clés' : 'key points'; 
+                
+                let badgeContent;
+                let badgeClass = 'timeline-badge';
+                if (semester.logo) {
+                    badgeContent = `<img src="${semester.logo}" alt="Logo">`;
+                } else {
+                    badgeClass += ' no-logo';
+                    badgeContent = `<i data-lucide="graduation-cap" width="24" color="white"></i>`;
+                }
+
+                const popupColor = semester.categories.length > 0 ? semester.categories[0].color : 'var(--purple)';
+
+                return `
+                    <div class="timeline-item reveal" style="--card-color: ${popupColor};" onclick="openTimelineModal('${semester.id}', '${semester.title.replace(/'/g, "\\'")}', '${(semester.subtitle || '').replace(/'/g, "\\'")}', '${popupColor}')">
+                        <div class="timeline-header">
+                            <div style="display:flex; align-items:center; gap:1rem; flex-wrap:wrap;">
+                                <div class="${badgeClass}" style="${!semester.logo ? 'background: ' + semester.gradient + ';' : ''}">
+                                    ${badgeContent}
+                                </div>
+                                <div class="timeline-info">
+                                    <h3>${semester.title}</h3>
+                                    ${semester.subtitle ? `<div class="timeline-subtitle">${semester.subtitle}</div>` : ''}
+                                </div>
+                            </div>
+                            <div style="display:flex; align-items:center; gap:1rem;">
+                                <span class="timeline-count">${totalCourses} ${courseLabel}</span>
+                                <div class="exp-action">
+                                    <i data-lucide="external-link" width="20"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            lucide.createIcons();
+            revealOnScroll();
+        }
+
+        const searchInput = document.getElementById('searchInput');
+        const searchResults = document.getElementById('searchResults');
+
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.trim();
+            renderTimeline(searchTerm);
+            
+            if (searchTerm) {
+                const currentData = academicData[currentLang];
+                const totalResults = currentData
+                    .filter(sem => hasMatchingCourses(sem, searchTerm))
+                    .reduce((acc, sem) => {
+                        const filtered = filterCourses(sem, searchTerm);
+                        return acc + filtered.categories.reduce((catAcc, cat) => catAcc + cat.courses.length, 0);
+                    }, 0);
+                
+                const resultText = currentLang === 'fr' 
+                    ? `${totalResults} résultat(s) trouvé(s)` 
+                    : `${totalResults} result(s) found`;
+                
+                searchResults.textContent = resultText;
+                searchResults.classList.remove('hidden');
+            } else {
+                searchResults.classList.add('hidden');
+            }
+        });
+
+        // --- ANIMATION SCROLL ---
+        function revealOnScroll() {
+            const reveals = document.querySelectorAll('.reveal');
+            reveals.forEach(element => {
+                const windowHeight = window.innerHeight;
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 100;
+                if (elementTop < windowHeight - elementVisible) {
+                    element.classList.add('active');
+                }
+            });
+            
+            const sections = document.querySelectorAll('section, body');
+            const navLi = document.querySelectorAll('.dock-item');
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= (sectionTop - sectionHeight / 3)) {
+                    current = section.getAttribute('id');
+                }
+            });
+            navLi.forEach(a => {
+                a.classList.remove('active');
+                if (a.getAttribute('href').includes(current)) {
+                    a.classList.add('active');
+                }
+            });
+        }
+        
+        window.addEventListener('scroll', revealOnScroll);
+
+        // --- GESTION TRADUCTION & MODE ---
+        document.getElementById('langToggle').addEventListener('click', () => {
+            currentLang = currentLang === 'fr' ? 'en' : 'fr';
+            document.getElementById('langText').textContent = currentLang === 'fr' ? 'EN' : 'FR';
+            applyTranslations();
+        });
+
+        document.getElementById('modeToggle').addEventListener('click', () => {
+            soberMode = !soberMode;
+            document.body.classList.toggle('sober-mode', soberMode);
+            const modeIcon = document.getElementById('modeIcon');
+            const modeText = document.getElementById('modeText');
+            
+            if (soberMode) {
+                modeIcon.setAttribute('data-lucide', 'moon');
+                modeText.setAttribute('data-translate', 'sober_mode'); 
+            } else {
+                modeIcon.setAttribute('data-lucide', 'sun');
+                modeText.setAttribute('data-translate', 'sober_mode');
+            }
+            lucide.createIcons();
+            applyTranslations(); 
+        });
+
+        function applyTranslations() {
+            const t = translations[currentLang];
+            document.querySelectorAll('[data-translate]').forEach(element => {
+                const key = element.getAttribute('data-translate');
+                if (t[key]) {
+                    if (t[key].includes('<')) {
+                        element.innerHTML = t[key];
+                    } else {
+                        element.textContent = t[key];
+                    }
+                }
+            });
+            
+            const modeText = document.getElementById('modeText');
+            if(soberMode) {
+                modeText.textContent = currentLang === 'fr' ? 'Sombre' : 'Dark';
+            } else {
+                modeText.textContent = t.sober_mode;
+            }
+
+            if (searchInput) searchInput.placeholder = t.search_placeholder;
+            
+            const cvLinkElement = document.getElementById('cvLink');
+            if (cvLinkElement && t.cv_link) cvLinkElement.href = t.cv_link;
+
+            renderTimeline(searchInput.value);
+            lucide.createIcons();
+        }
+
+        // Toggle FAQ
+        function toggleFaq(header) {
+            const item = header.parentElement;
+            item.classList.toggle('active');
+        }
+
+        // --- INIT ---
+        document.addEventListener('DOMContentLoaded', () => {
+            renderTimeline();
+            lucide.createIcons();
+            revealOnScroll();
+        });
+    </script>
+</body>
+</html>
